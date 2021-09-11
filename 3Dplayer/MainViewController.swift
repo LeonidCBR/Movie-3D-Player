@@ -46,7 +46,7 @@ class MainViewController: UIViewController {
         let cameraLeft = SCNCamera()
 //        camera.zFar = 100.0
         cameraNodeLeft.camera = cameraLeft
-        cameraNodeLeft.position = SCNVector3(x: -0.5, y: 0.0, z: 0.0)
+        cameraNodeLeft.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
         // turn to the left by 90 degrees
         cameraNodeLeft.eulerAngles.y += .pi/2
 //        cameraNode.eulerAngles = SCNVector3(x: .pi/20, y: -.pi/4, z: 0)
@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
 
         let cameraRight = SCNCamera()
         cameraNodeRight.camera = cameraRight
-        cameraNodeRight.position = SCNVector3(x: 0.5, y: 0.0, z: 0.0)
+        cameraNodeRight.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
         // turn to the right by 90 degrees
         cameraNodeRight.eulerAngles.y -= .pi/2
         sceneRight.rootNode.addChildNode(cameraNodeRight)
