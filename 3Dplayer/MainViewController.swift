@@ -68,18 +68,37 @@ class MainViewController: UIViewController {
 
         let width = 4096 // 3840
         let height = 2048 // 1920
+
+        // LEFT SCENE
         let videoSKSceneLeft = SKScene(size: CGSize(width: width, height: height))
         videoSKSceneLeft.scaleMode = .aspectFit
 
-//        let videoSKNode = SKVideoNode(avPlayer: videoPlayer)
+//        let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
         let videoSKNodeLeft = SKSpriteNode(imageNamed: "picture.jpg")
         videoSKNodeLeft.position = CGPoint(x: width / 2, y: height / 2)
         videoSKNodeLeft.size = videoSKSceneLeft.size
         videoSKSceneLeft.addChild(videoSKNodeLeft)
 
-        let videoNodeLeft = makePlaneNode(scene: videoSKSceneLeft)
+        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
 //        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
         sceneLeft.rootNode.addChildNode(videoNodeLeft)
+
+
+        // RIGHT SCENE
+        let videoSKSceneRight = SKScene(size: CGSize(width: width, height: height))
+        videoSKSceneRight.scaleMode = .aspectFit
+
+//        let videoSKNodeRight = SKVideoNode(avPlayer: videoPlayer)
+        let videoSKNodeRight = SKSpriteNode(imageNamed: "picture.jpg")
+        videoSKNodeRight.position = CGPoint(x: width / 2, y: height / 2)
+        videoSKNodeRight.size = videoSKSceneRight.size
+        videoSKSceneRight.addChild(videoSKNodeRight)
+
+        let videoNodeRight = makeSphereNode(scene: videoSKSceneRight)
+//        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
+        sceneRight.rootNode.addChildNode(videoNodeRight)
+
+
 
 /*
         let geometryLeft = SCNSphere(radius: 30.0)
