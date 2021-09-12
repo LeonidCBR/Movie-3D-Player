@@ -13,24 +13,15 @@ import AVFoundation
 
 class MainViewController: UIViewController {
 
+    // TODO: - Add arrays
+    // like sceneViews = [SCNView(), SCNView()]
+
     // Views
     let sceneViewLeft = SCNView()
     let sceneViewRight = SCNView()
 
     // Cameras
-    let cameraNodeLeft: SCNNode = {
-        // set up camera
-        let cameraNode = SCNNode()
-        let cameraLeft = SCNCamera()
-        cameraLeft.zFar = 100.0
-        cameraNode.camera = cameraLeft
-        cameraNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
-        // turn to the left by 90 degrees
-        cameraNode.eulerAngles.y += .pi/2
-//        cameraNode.eulerAngles = SCNVector3(x: .pi/20, y: -.pi/4, z: 0)
-        return cameraNode
-    }() //= SCNNode()
-
+    let cameraNodeLeft = SCNNode()
     let cameraNodeRight = SCNNode()
 
     let motionManager = CMMotionManager()
@@ -46,88 +37,54 @@ class MainViewController: UIViewController {
     private func createScene() {
         createStackView()
 
-        // Create scenes
+        /** Configure cameras */
+        configureCamera(cameraNodeLeft)
+        // turn to the left by 90 degrees
+//        cameraNodeLeft.eulerAngles.y += .pi/2
+
+        configureCamera(cameraNodeRight)
+        // turn to the right by 90 degrees
+//        cameraNodeRight.eulerAngles.y -= .pi/2
+
+        /** Create scenes */
         let sceneLeft = SCNScene()
         sceneViewLeft.scene = sceneLeft
-        let sceneRight = SCNScene()
-        sceneViewRight.scene = sceneRight
-
         sceneLeft.rootNode.addChildNode(cameraNodeLeft)
         sceneViewLeft.pointOfView = cameraNodeLeft
-
-        let cameraRight = SCNCamera()
-        cameraNodeRight.camera = cameraRight
-        cameraNodeRight.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
-        // turn to the right by 90 degrees
-        cameraNodeRight.eulerAngles.y -= .pi/2
-        sceneRight.rootNode.addChildNode(cameraNodeRight)
-        sceneViewRight.pointOfView = cameraNodeRight
-
-
         // Create sprite kit scene for video playing
-
         let width = 4096 // 3840
         let height = 2048 // 1920
-
-        // LEFT SCENE
         let videoSKSceneLeft = SKScene(size: CGSize(width: width, height: height))
         videoSKSceneLeft.scaleMode = .aspectFit
-
 //        let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
         let videoSKNodeLeft = SKSpriteNode(imageNamed: "picture.jpg")
         videoSKNodeLeft.position = CGPoint(x: width / 2, y: height / 2)
         videoSKNodeLeft.size = videoSKSceneLeft.size
         videoSKSceneLeft.addChild(videoSKNodeLeft)
-
         let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
 //        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
         sceneLeft.rootNode.addChildNode(videoNodeLeft)
 
 
-        // RIGHT SCENE
+
+        let sceneRight = SCNScene()
+        sceneViewRight.scene = sceneRight
+        sceneRight.rootNode.addChildNode(cameraNodeRight)
+        sceneViewRight.pointOfView = cameraNodeRight
         let videoSKSceneRight = SKScene(size: CGSize(width: width, height: height))
         videoSKSceneRight.scaleMode = .aspectFit
-
 //        let videoSKNodeRight = SKVideoNode(avPlayer: videoPlayer)
         let videoSKNodeRight = SKSpriteNode(imageNamed: "picture.jpg")
         videoSKNodeRight.position = CGPoint(x: width / 2, y: height / 2)
         videoSKNodeRight.size = videoSKSceneRight.size
         videoSKSceneRight.addChild(videoSKNodeRight)
-
         let videoNodeRight = makeSphereNode(scene: videoSKSceneRight)
 //        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
         sceneRight.rootNode.addChildNode(videoNodeRight)
 
 
 
-/*
-        let geometryLeft = SCNSphere(radius: 30.0)
-//        let contentLeft = UIColor.blue
-        let contentLeft = UIImage(named: "picture.jpg")
-        geometryLeft.firstMaterial?.diffuse.contents = contentLeft
 
-        // Flip upside down
-        let matrix = SCNMatrix4MakeRotation(.pi, 1.0, 0.0, 0.0)
-        let transform = SCNMatrix4Translate(matrix, 0.0, 1.0, 1.0)
-        geometryLeft.firstMaterial?.diffuse.contentsTransform = transform
-        geometryLeft.firstMaterial?.isDoubleSided = true
-        let simpleNodeLeft = SCNNode(geometry: geometryLeft)
-        simpleNodeLeft.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
-//        let rotation = SCNMatrix4MakeRotation(.pi, 1.0, 0.0, 0.0)
-//        simpleNodeLeft.pivot = rotation
-        sceneLeft.rootNode.addChildNode(simpleNodeLeft)
-
-        let geometryRight = SCNSphere(radius: 30.0)
-//        let contentRight = UIColor.red
-        let contentRight = contentLeft
-        geometryRight.firstMaterial?.diffuse.contents = contentRight
-        geometryRight.firstMaterial?.diffuse.contentsTransform = transform
-        geometryRight.firstMaterial?.isDoubleSided = true
-        let simpleNodeRight = SCNNode(geometry: geometryRight)
-        simpleNodeRight.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
-//        simpleNodeRight.pivot = rotation
-        sceneRight.rootNode.addChildNode(simpleNodeRight)
-*/
         sceneViewLeft.isPlaying = true
         sceneViewRight.isPlaying = true
 
@@ -159,6 +116,13 @@ class MainViewController: UIViewController {
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    }
+
+    private func configureCamera(_ cameraNode: SCNNode) {
+        let camera = SCNCamera()
+        camera.zFar = 100.0
+        cameraNode.camera = camera
+        cameraNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
     }
 
     private func makePlaneNode(scene: SKScene) -> SCNNode {
