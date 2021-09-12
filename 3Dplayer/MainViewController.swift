@@ -175,15 +175,22 @@ class MainViewController: UIViewController {
 
     private func makeSphereNode(scene: SKScene) -> SCNNode {
         print("DEBUG: \(#function)")
-        let sphereNode = SCNNode()
+
+        // Create geometry
         let sphere = SCNSphere(radius: 30)
         sphere.firstMaterial?.diffuse.contents = scene
         sphere.firstMaterial?.isDoubleSided = true
 
-        // Flip video
-        //...
+        // Flip upside down
+//        let matrix = SCNMatrix4MakeRotation(.pi, 1.0, 0.0, 0.0)
+//        let transform = SCNMatrix4Translate(matrix, 0.0, 1.0, 1.0)
 
-        sphereNode.pivot = SCNMatrix4MakeRotation(.pi, 1.0, 0.0, 0.0)
+//        let matrix = SCNMatrix4MakeRotation(.pi, 0.0, 0.0, 1.0)
+//        let transform = SCNMatrix4Translate(matrix, 1.0, 1.0, 0.0)
+//        sphere.firstMaterial?.diffuse.contentsTransform = transform
+//        sphereNode.pivot = SCNMatrix4MakeRotation(.pi, 1.0, 0.0, 0.0)
+
+        let sphereNode = SCNNode()
         sphereNode.geometry = sphere
         sphereNode.position = SCNVector3(0, 0, 0)
         return sphereNode
