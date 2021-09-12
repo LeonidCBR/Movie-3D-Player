@@ -27,6 +27,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         configureSceneViews()
+        print("DEBUG: The scene views has been loded.")
     }
 
 
@@ -111,6 +112,26 @@ class MainViewController: UIViewController {
             let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
             videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
             videoSKNode.size = videoSKScene.size
+/*
+            // Got freezing!
+
+            let maskRect: CGRect
+            if i == 0 {
+                // left side
+                maskRect = CGRect(x: width / 2, y: 0, width: width / 2, height: height)
+            } else {
+                // right side
+                maskRect = CGRect(x: 0, y: 0, width: width / 2, height: height)
+            }
+            let maskNode = SKShapeNode(rect: maskRect)
+            maskNode.fillColor = SKColor.black
+            let cropNode = SKCropNode()
+            cropNode.position = CGPoint(x: 0.0, y: 0.0)
+            cropNode.maskNode = maskNode
+            cropNode.addChild(videoSKNode)
+//            cropNode.xScale = 2
+            videoSKScene.addChild(cropNode)
+*/
             videoSKScene.addChild(videoSKNode)
 
             let videoNode = makeSphereNode(scene: videoSKScene)
