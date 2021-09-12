@@ -13,81 +13,37 @@ import AVFoundation
 
 class MainViewController: UIViewController {
 
-    // TODO: - Add arrays
-    // like sceneViews = [SCNView(), SCNView()]
+    // MARK: - Properties
 
-    // Views
-    let sceneViewLeft = SCNView()
-    let sceneViewRight = SCNView()
-
-    // Cameras
-    let cameraNodeLeft = SCNNode()
-    let cameraNodeRight = SCNNode()
-
+    let sceneViews = [SCNView(), SCNView()]
+    let cameraNodes = [SCNNode(), SCNNode()]
     let motionManager = CMMotionManager()
-
     let videoPlayer = AVPlayer()
+
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        createScene()
+        configureSceneViews()
     }
 
-    private func createScene() {
-        createStackView()
 
-        /** Configure cameras */
-        configureCamera(cameraNodeLeft)
+    // MARK: - Methods
+
+    private func configureSceneViews() {
+        createStackView()
+        configureCameras()
+
         // turn to the left by 90 degrees
 //        cameraNodeLeft.eulerAngles.y += .pi/2
 
-        configureCamera(cameraNodeRight)
         // turn to the right by 90 degrees
 //        cameraNodeRight.eulerAngles.y -= .pi/2
 
-        /** Create scenes */
-        let sceneLeft = SCNScene()
-        sceneViewLeft.scene = sceneLeft
-        sceneLeft.rootNode.addChildNode(cameraNodeLeft)
-        sceneViewLeft.pointOfView = cameraNodeLeft
-        // Create sprite kit scene for video playing
-        let width = 4096 // 3840
-        let height = 2048 // 1920
-        let videoSKSceneLeft = SKScene(size: CGSize(width: width, height: height))
-        videoSKSceneLeft.scaleMode = .aspectFit
-//        let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
-        let videoSKNodeLeft = SKSpriteNode(imageNamed: "picture.jpg")
-        videoSKNodeLeft.position = CGPoint(x: width / 2, y: height / 2)
-        videoSKNodeLeft.size = videoSKSceneLeft.size
-        videoSKSceneLeft.addChild(videoSKNodeLeft)
-        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
-//        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
-        sceneLeft.rootNode.addChildNode(videoNodeLeft)
-
-
-
-        let sceneRight = SCNScene()
-        sceneViewRight.scene = sceneRight
-        sceneRight.rootNode.addChildNode(cameraNodeRight)
-        sceneViewRight.pointOfView = cameraNodeRight
-        let videoSKSceneRight = SKScene(size: CGSize(width: width, height: height))
-        videoSKSceneRight.scaleMode = .aspectFit
-//        let videoSKNodeRight = SKVideoNode(avPlayer: videoPlayer)
-        let videoSKNodeRight = SKSpriteNode(imageNamed: "picture.jpg")
-        videoSKNodeRight.position = CGPoint(x: width / 2, y: height / 2)
-        videoSKNodeRight.size = videoSKSceneRight.size
-        videoSKSceneRight.addChild(videoSKNodeRight)
-        let videoNodeRight = makeSphereNode(scene: videoSKSceneRight)
-//        let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
-        sceneRight.rootNode.addChildNode(videoNodeRight)
-
-
-
-
-        sceneViewLeft.isPlaying = true
-        sceneViewRight.isPlaying = true
-
+        createScenes()
+        playScenes()
 
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
         motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { deviceMotion, error in
@@ -97,15 +53,20 @@ class MainViewController: UIViewController {
             let yaw = Float(currentAttitude.yaw)
             let yawRight = yaw + .pi
             let pitch = Float(currentAttitude.pitch)
-            self.cameraNodeLeft.eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
-            self.cameraNodeRight.eulerAngles = SCNVector3(x: roll, y: -yawRight, z: -pitch)
+//            self.cameraNodeLeft.eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
+//            self.cameraNodeRight.eulerAngles = SCNVector3(x: roll, y: -yawRight, z: -pitch)
+            // Left camera
+            self.cameraNodes[0].eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
+            // Right camera
+            self.cameraNodes[1].eulerAngles = SCNVector3(x: roll, y: -yawRight, z: -pitch)
         }
 
     }
 
     private func createStackView() {
         // Create stack view for scenes' views
-        let stackView = UIStackView(arrangedSubviews: [sceneViewLeft, sceneViewRight])
+//        let stackView = UIStackView(arrangedSubviews: [sceneViewLeft, sceneViewRight])
+        let stackView = UIStackView(arrangedSubviews: sceneViews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
@@ -118,11 +79,50 @@ class MainViewController: UIViewController {
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
 
-    private func configureCamera(_ cameraNode: SCNNode) {
-        let camera = SCNCamera()
-        camera.zFar = 100.0
-        cameraNode.camera = camera
-        cameraNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
+    private func configureCameras() {
+        for cameraNode in cameraNodes {
+            let camera = SCNCamera()
+            camera.zFar = 100.0
+            cameraNode.camera = camera
+            cameraNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.0)
+        }
+    }
+
+    /** Create scenes for left and right eyes */
+    private func createScenes() {
+        for i in 0...1 {
+            print("DEBUG: Create scene (id=\(i))")
+            let cameraNode = cameraNodes[i]
+            let sceneView = sceneViews[i]
+
+            let scene = SCNScene()
+            scene.rootNode.addChildNode(cameraNode)
+
+            sceneView.scene = scene
+            sceneView.pointOfView = cameraNode
+
+            // Create sprite kit scene for video playing
+            let width = 4096 // 3840
+            let height = 2048 // 1920
+            let videoSKScene = SKScene(size: CGSize(width: width, height: height))
+            videoSKScene.scaleMode = .aspectFit
+//            let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
+
+            let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
+            videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
+            videoSKNode.size = videoSKScene.size
+            videoSKScene.addChild(videoSKNode)
+
+            let videoNode = makeSphereNode(scene: videoSKScene)
+//            let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
+            scene.rootNode.addChildNode(videoNode)
+        }
+    }
+
+    private func playScenes() {
+        for sceneView in sceneViews {
+            sceneView.isPlaying = true
+        }
     }
 
     private func makePlaneNode(scene: SKScene) -> SCNNode {
@@ -159,5 +159,6 @@ class MainViewController: UIViewController {
         sphereNode.position = SCNVector3(0, 0, 0)
         return sphereNode
     }
+
 }
 
