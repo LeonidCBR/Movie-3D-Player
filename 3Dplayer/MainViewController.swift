@@ -43,7 +43,7 @@ class MainViewController: UIViewController {
         // turn to the right by 90 degrees
 //        cameraNodeRight.eulerAngles.y -= .pi/2
 
-        createScenes()
+        createScene()
         playScenes()
 
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
@@ -89,55 +89,31 @@ class MainViewController: UIViewController {
         }
     }
 
-    /** Create scenes for left and right eyes */
-    private func createScenes() {
+    /** Create single scene with two cameras */
+    private func createScene() {
+
+        let scene = SCNScene()
+
         for i in 0...1 {
-            print("DEBUG: Create scene (id=\(i))")
-            let cameraNode = cameraNodes[i]
-            let sceneView = sceneViews[i]
+            scene.rootNode.addChildNode(cameraNodes[i])
+            sceneViews[i].scene = scene
+            sceneViews[i].pointOfView = cameraNodes[i]
+        }
 
-            let scene = SCNScene()
-            scene.rootNode.addChildNode(cameraNode)
-
-            sceneView.scene = scene
-            sceneView.pointOfView = cameraNode
-
-            // Create sprite kit scene for video playing
-            let width = 4096 // 3840
-            let height = 2048 // 1920
-            let videoSKScene = SKScene(size: CGSize(width: width, height: height))
-            videoSKScene.scaleMode = .aspectFit
+        // Create sprite kit scene for video playing
+        let width = 4096 // 3840
+        let height = 2048 // 1920
+        let videoSKScene = SKScene(size: CGSize(width: width, height: height))
+        videoSKScene.scaleMode = .aspectFit
 //            let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
 
-            let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
-            videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
-            videoSKNode.size = videoSKScene.size
-/*
-            // Got freezing!
+        let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
+        videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
+        videoSKNode.size = videoSKScene.size
+        videoSKScene.addChild(videoSKNode)
 
-            let maskRect: CGRect
-            if i == 0 {
-                // left side
-                maskRect = CGRect(x: width / 2, y: 0, width: width / 2, height: height)
-            } else {
-                // right side
-                maskRect = CGRect(x: 0, y: 0, width: width / 2, height: height)
-            }
-            let maskNode = SKShapeNode(rect: maskRect)
-            maskNode.fillColor = SKColor.black
-            let cropNode = SKCropNode()
-            cropNode.position = CGPoint(x: 0.0, y: 0.0)
-            cropNode.maskNode = maskNode
-            cropNode.addChild(videoSKNode)
-//            cropNode.xScale = 2
-            videoSKScene.addChild(cropNode)
-*/
-            videoSKScene.addChild(videoSKNode)
-
-            let videoNode = makeSphereNode(scene: videoSKScene)
-//            let videoNodeLeft = makeSphereNode(scene: videoSKSceneLeft)
-            scene.rootNode.addChildNode(videoNode)
-        }
+        let videoNode = makeSphereNode(scene: videoSKScene)
+        scene.rootNode.addChildNode(videoNode)
     }
 
     private func playScenes() {
