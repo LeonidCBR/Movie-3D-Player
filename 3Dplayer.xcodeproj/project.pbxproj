@@ -14,7 +14,6 @@
 		D70C959F26EB7D6800455017 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */; };
 		D70C95A726EB87B700455017 /* picture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D70C95A626EB87B700455017 /* picture.jpg */; };
 		D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */; };
-		D7CF882426EED0EC004D433F /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882326EED0EC004D433F /* DocumentViewController.swift */; };
 		D7CF882726EED340004D433F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882626EED340004D433F /* Document.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		D70C95A026EB7D6800455017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D70C95A626EB87B700455017 /* picture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = picture.jpg; sourceTree = "<group>"; };
 		D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
-		D7CF882326EED0EC004D433F /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
 		D7CF882626EED340004D433F /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +77,6 @@
 			children = (
 				D70C959626EB7D6300455017 /* VideoViewController.swift */,
 				D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */,
-				D7CF882326EED0EC004D433F /* DocumentViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -162,7 +159,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7CF882426EED0EC004D433F /* DocumentViewController.swift in Sources */,
 				D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */,
 				D7CF882726EED340004D433F /* Document.swift in Sources */,
 				D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */,

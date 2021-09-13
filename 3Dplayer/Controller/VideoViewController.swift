@@ -65,8 +65,7 @@ class VideoViewController: UIViewController {
             let yaw = Float(currentAttitude.yaw)
             let yawRight = yaw + .pi
             let pitch = Float(currentAttitude.pitch)
-//            self.cameraNodeLeft.eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
-//            self.cameraNodeRight.eulerAngles = SCNVector3(x: roll, y: -yawRight, z: -pitch)
+
             // Left camera
             self.cameraNodes[0].eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
             // Right camera
