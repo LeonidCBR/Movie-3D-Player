@@ -19,6 +19,13 @@ class VideoViewController: UIViewController {
     let cameraNodes = [SCNNode(), SCNNode()]
     let motionManager = CMMotionManager()
     let videoPlayer = AVPlayer()
+    var document: UIDocument? {
+        didSet {
+            if let fileUrl = document?.fileURL {
+                videoPlayer.replaceCurrentItem(with: AVPlayerItem(url: fileUrl))
+            }
+        }
+    }
 
 
     // MARK: - Lifecycle
@@ -44,7 +51,7 @@ class VideoViewController: UIViewController {
 //        cameraNodeRight.eulerAngles.y -= .pi/2
 
         createScene()
-        playScenes()
+        start()
 
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
         motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { deviceMotion, error in
@@ -101,13 +108,12 @@ class VideoViewController: UIViewController {
         }
 
         // Create sprite kit scene for video playing
-        let width = 4096 // 3840
-        let height = 2048 // 1920
+        let width = 3840 // for pic 4096
+        let height = 1920 // for pic 2048
         let videoSKScene = SKScene(size: CGSize(width: width, height: height))
         videoSKScene.scaleMode = .aspectFit
-//            let videoSKNodeLeft = SKVideoNode(avPlayer: videoPlayer)
-
-        let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
+        let videoSKNode = SKVideoNode(avPlayer: videoPlayer)
+//        let videoSKNode = SKSpriteNode(imageNamed: "picture.jpg")
         videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
         videoSKNode.size = videoSKScene.size
         videoSKScene.addChild(videoSKNode)
@@ -116,10 +122,12 @@ class VideoViewController: UIViewController {
         scene.rootNode.addChildNode(videoNode)
     }
 
-    private func playScenes() {
+    private func start() {
         for sceneView in sceneViews {
             sceneView.isPlaying = true
         }
+
+        videoPlayer.play()
     }
 
     private func makePlaneNode(scene: SKScene) -> SCNNode {
