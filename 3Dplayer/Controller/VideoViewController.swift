@@ -11,7 +11,7 @@ import SpriteKit
 import CoreMotion
 import AVFoundation
 
-class MainViewController: UIViewController {
+class VideoViewController: UIViewController {
 
     // MARK: - Properties
 
