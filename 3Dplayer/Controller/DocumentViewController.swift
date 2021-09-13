@@ -13,6 +13,10 @@ class DocumentViewController: UIViewController {
 
     var document: UIDocument?
 
+    override func viewDidLoad() {
+        view.backgroundColor = .blue
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
