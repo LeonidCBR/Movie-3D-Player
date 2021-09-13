@@ -37,6 +37,10 @@ class VideoViewController: UIViewController {
         print("DEBUG: The scene views has been loded.")
     }
 
+    deinit {
+        print("DEBUG: deinit if video view controller.")
+    }
+
 
     // MARK: - Methods
 
