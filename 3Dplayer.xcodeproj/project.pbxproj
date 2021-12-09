@@ -12,7 +12,8 @@
 		D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959626EB7D6300455017 /* VideoViewController.swift */; };
 		D70C959C26EB7D6800455017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D70C959B26EB7D6800455017 /* Assets.xcassets */; };
 		D70C959F26EB7D6800455017 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */; };
-		D70C95A726EB87B700455017 /* picture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D70C95A626EB87B700455017 /* picture.jpg */; };
+		D739BA1F276091D2002B1D53 /* SceneKit Asset Catalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */; };
+		D739BA212760AE09002B1D53 /* picture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D739BA202760AE08002B1D53 /* picture.jpg */; };
 		D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */; };
 		D7CF882726EED340004D433F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882626EED340004D433F /* Document.swift */; };
 /* End PBXBuildFile section */
@@ -25,7 +26,8 @@
 		D70C959B26EB7D6800455017 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D70C959E26EB7D6800455017 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D70C95A026EB7D6800455017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D70C95A626EB87B700455017 /* picture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = picture.jpg; sourceTree = "<group>"; };
+		D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = "SceneKit Asset Catalog.scnassets"; sourceTree = "<group>"; };
+		D739BA202760AE08002B1D53 /* picture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = picture.jpg; sourceTree = "<group>"; };
 		D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
 		D7CF882626EED340004D433F /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,12 +62,13 @@
 		D70C959126EB7D6300455017 /* 3Dplayer */ = {
 			isa = PBXGroup;
 			children = (
+				D739BA202760AE08002B1D53 /* picture.jpg */,
 				D7CF882526EED32D004D433F /* Model */,
 				D7CF882226EED075004D433F /* Controller */,
 				D70C959226EB7D6300455017 /* AppDelegate.swift */,
 				D70C959426EB7D6300455017 /* SceneDelegate.swift */,
 				D70C959B26EB7D6800455017 /* Assets.xcassets */,
-				D70C95A626EB87B700455017 /* picture.jpg */,
+				D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */,
 				D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */,
 				D70C95A026EB7D6800455017 /* Info.plist */,
 			);
@@ -146,8 +149,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D739BA1F276091D2002B1D53 /* SceneKit Asset Catalog.scnassets in Resources */,
 				D70C959F26EB7D6800455017 /* LaunchScreen.storyboard in Resources */,
-				D70C95A726EB87B700455017 /* picture.jpg in Resources */,
+				D739BA212760AE09002B1D53 /* picture.jpg in Resources */,
 				D70C959C26EB7D6800455017 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,7 +307,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TZ76M4XXC9;
+				DEVELOPMENT_TEAM = 973295K87L;
 				INFOPLIST_FILE = 3Dplayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,7 +326,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TZ76M4XXC9;
+				DEVELOPMENT_TEAM = 973295K87L;
 				INFOPLIST_FILE = 3Dplayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
