@@ -97,10 +97,14 @@ class VideoViewController: UIViewController {
     }
 
     private func configureNodes() {
-        cameraNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
-        cameraNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
         domeNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
         domeNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
+
+        cameraNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
+        cameraNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
+
+        cameraNodeLeft.camera!.fieldOfView = 100
+        cameraNodeRight.camera!.fieldOfView = 100
     }
 
     private func configureSceneViews() {
@@ -174,27 +178,51 @@ class VideoViewController: UIViewController {
     }
 
     private func configureGestures() {
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
+
+        /*
+         Play/pause                 - single tap
+         Init position of the scene - single tap by two fingers
+         Increase value of FOV      - swipe up
+         Decrease value of FOV      - swipe down
+         Dismiss video controller   - swipe down by two fingers
+         */
+
+        let singleTap = UITapGestureRecognizer(target: self,
+                                               action: #selector(handlePlay(_:)))
         singleTap.numberOfTapsRequired = 1
         singleTap.numberOfTouchesRequired = 1
         view.addGestureRecognizer(singleTap)
 
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeDown(_:)))
-        swipeDown.direction = .down
-        swipeDown.numberOfTouchesRequired = 2
-        view.addGestureRecognizer(swipeDown)
+        let singleTapTwoFingers = UITapGestureRecognizer(target: self,
+                                                         action: #selector(handleInitScenePosition(_:)))
+        singleTapTwoFingers.numberOfTapsRequired = 1
+        singleTapTwoFingers.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(singleTapTwoFingers)
 
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeUp(_:)))
+        let swipeUp = UISwipeGestureRecognizer(target: self,
+                                               action: #selector(handleIncreaseFOV(_:)))
         swipeUp.direction = .up
         swipeUp.numberOfTouchesRequired = 1
         view.addGestureRecognizer(swipeUp)
+
+        let swipeDown = UISwipeGestureRecognizer(target: self,
+                                                 action: #selector(handleDecreaseFOV(_:)))
+        swipeDown.direction = .down
+        swipeDown.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(swipeDown)
+
+        let swipeDownTwoFingers = UISwipeGestureRecognizer(target: self,
+                                                           action: #selector(handleDismiss(_:)))
+        swipeDownTwoFingers.direction = .down
+        swipeDownTwoFingers.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(swipeDownTwoFingers)
     }
 
 
     // MARK: - Selectors
 
     /** Play/pause */
-    @objc func handleSingleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+    @objc private func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
 
         if gestureRecognizer.state == .ended {
@@ -202,22 +230,46 @@ class VideoViewController: UIViewController {
         }
     }
 
-    /** Dismiss controller */
-    @objc func handleSwipeDown(_ gestureRecognizer: UISwipeGestureRecognizer) {
-        guard gestureRecognizer.view != nil else { return }
-
-        if gestureRecognizer.state == .ended {
-            dismiss(animated: true)
-        }
-    }
-
-    /** Rotate the sphere according the camera's view */
-    @objc func handleSwipeUp(_ gestureRecognizer: UISwipeGestureRecognizer) {
+    /** Init view of the scene by rotating the sphere according the camera's view */
+    @objc private func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
 
         if gestureRecognizer.state == .ended {
             domeNodeLeft.eulerAngles.y = cameraNodeLeft.eulerAngles.y
             domeNodeRight.eulerAngles.y = cameraNodeRight.eulerAngles.y + .pi
+        }
+    }
+
+    /** Increase value of FOV */
+    @objc private func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+
+        if gestureRecognizer.state == .ended {
+            if cameraNodeLeft.camera!.fieldOfView < 115 {
+            cameraNodeLeft.camera!.fieldOfView += 5
+            cameraNodeRight.camera!.fieldOfView += 5
+            }
+        }
+    }
+
+    /** Decrease value of FOV */
+    @objc private func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+
+        if gestureRecognizer.state == .ended {
+            if cameraNodeLeft.camera!.fieldOfView > 40 {
+                cameraNodeLeft.camera!.fieldOfView -= 5
+                cameraNodeRight.camera!.fieldOfView -= 5
+            }
+        }
+    }
+
+    /** Dismiss controller */
+    @objc private func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+
+        if gestureRecognizer.state == .ended {
+            dismiss(animated: true)
         }
     }
 
