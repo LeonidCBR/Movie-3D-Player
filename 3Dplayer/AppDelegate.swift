@@ -14,6 +14,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+/*
+        let videoDirName = "Video"
+        if let baseDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let videoURL = baseDir.appendingPathComponent(videoDirName)
+            if !FileManager.default.fileExists(atPath: videoURL.path) {
+                do {
+                    print("DEBUG: Creating video directory...")
+                    try FileManager.default.createDirectory(at: videoURL, withIntermediateDirectories: false, attributes: nil)
+                    // TODO: Look at => attributes: [FileAttributeKey : Any]?)
+                } catch {
+                    print("ERROR: Creating directory is faild! \(error)")
+                }
+            } else {
+                print("DEBUG: Video directory exists.")
+            }
+        }
+*/
         return true
     }
 

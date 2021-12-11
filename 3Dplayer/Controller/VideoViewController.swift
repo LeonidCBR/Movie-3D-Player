@@ -26,6 +26,7 @@ class VideoViewController: UIViewController {
 
     weak var cameraNodeLeft: SCNNode!
     weak var cameraNodeRight: SCNNode!
+    let fieldOfView = 85.0
 
     weak var domeNodeLeft: SCNNode!
     weak var domeNodeRight: SCNNode!
@@ -57,10 +58,15 @@ class VideoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = .black
+        UIApplication.shared.isIdleTimerDisabled = true
+        videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
+
         sceneViewLeft = createScene(named: sceneNameLeft)
         sceneViewRight = createScene(named: sceneNameRight)
         configureNodes()
+        configureCameras()
         configureSceneViews()
         createVideoScene()
         configureVideoNode(at: sceneViewLeft)
@@ -81,6 +87,7 @@ class VideoViewController: UIViewController {
 
     deinit {
         print("DEBUG: deinit video view controller.")
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 
 
@@ -99,12 +106,14 @@ class VideoViewController: UIViewController {
     private func configureNodes() {
         domeNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
         domeNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
+    }
 
+    private func configureCameras() {
         cameraNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
         cameraNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
 
-        cameraNodeLeft.camera!.fieldOfView = 100
-        cameraNodeRight.camera!.fieldOfView = 100
+        cameraNodeLeft.camera!.fieldOfView = fieldOfView
+        cameraNodeRight.camera!.fieldOfView = fieldOfView
     }
 
     private func configureSceneViews() {
