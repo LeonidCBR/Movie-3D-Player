@@ -93,6 +93,14 @@ class VideoViewController: UIViewController {
 
     // MARK: - Methods
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscapeLeft
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+
     private func createScene(named sceneName: String) -> SCNView {
         let scene = SCNScene(named: sceneName)!
         let sceneView = SCNView()

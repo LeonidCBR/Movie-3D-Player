@@ -78,8 +78,8 @@
 		D7CF882226EED075004D433F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				D70C959626EB7D6300455017 /* VideoViewController.swift */,
 				D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */,
+				D70C959626EB7D6300455017 /* VideoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
