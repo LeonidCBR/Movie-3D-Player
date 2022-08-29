@@ -10,6 +10,7 @@ import SceneKit
 import SpriteKit
 import CoreMotion
 import AVFoundation
+import MediaPlayer
 
 
 // TODO: Implement a single view
@@ -73,16 +74,20 @@ class VideoViewController: UIViewController {
         configureVideoNode(at: sceneViewRight)
         configureMotionManager()
         configureGestures()
+
+        setupRemoteTransportControls()
+        setupNowPlaying()
+        isPlaying = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        isPlaying = true
+        //isPlaying = true
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        isPlaying = false
+        //isPlaying = false
     }
 
     deinit {
@@ -93,12 +98,77 @@ class VideoViewController: UIViewController {
 
     // MARK: - Methods
 
+    func setupRemoteTransportControls() {
+        // Get the shared MPRemoteCommandCenter
+        let commandCenter = MPRemoteCommandCenter.shared()
+
+        // Add handler for Play Command
+        commandCenter.playCommand.addTarget { [weak self] event in
+
+            guard let self = self else {
+                return .noActionableNowPlayingItem
+            }
+
+            if self.videoPlayer.rate == 0.0 {
+                self.videoPlayer.play()
+                return .success
+            }
+            return .commandFailed
+        }
+
+        // Add handler for Pause Command
+        commandCenter.pauseCommand.addTarget { [weak self] event in
+
+            guard let self = self else {
+                return .noActionableNowPlayingItem
+            }
+
+            if self.videoPlayer.rate == 1.0 {
+                self.videoPlayer.pause()
+                return .success
+            }
+            return .commandFailed
+        }
+    }
+
+    func setupNowPlaying() {
+        // Define Now Playing Info
+        var nowPlayingInfo = [String : Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = document?.localizedName
+
+        if let image = UIImage(named: "picture.jpg") {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+            MPMediaItemArtwork(boundsSize: image.size) { size in
+                return image
+            }
+        }
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = videoPlayer.currentItem?.currentTime().seconds
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = videoPlayer.currentItem?.duration.seconds
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = videoPlayer.rate
+
+        // Set the metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeLeft
     }
 
     override var shouldAutorotate: Bool {
         return false
+    }
+
+    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        guard let key = presses.first?.key else { return }
+
+        switch key.keyCode {
+        case .keyboardLeftArrow:
+            seekBackward(by: 20)
+        case .keyboardRightArrow:
+            seekForward(by: 20)
+        default:
+            super.pressesEnded(presses, with: event)
+        }
     }
 
     private func createScene(named sceneName: String) -> SCNView {
@@ -194,6 +264,20 @@ class VideoViewController: UIViewController {
         videoPlayer.pause()
     }
 
+    private func seekBackward(by seconds: CMTimeValue) {
+        // seek backward by 20 seconds
+        let delta = CMTime(value: 20, timescale: 1)
+        let newTime = videoPlayer.currentTime() - delta
+        videoPlayer.seek(to: newTime)
+    }
+
+    private func seekForward(by seconds: CMTimeValue) {
+        // seek forward by 20 seconds
+        let delta = CMTime(value: 20, timescale: 1)
+        let newTime = videoPlayer.currentTime() + delta
+        videoPlayer.seek(to: newTime)
+    }
+
     private func configureGestures() {
 
         /*
@@ -201,6 +285,8 @@ class VideoViewController: UIViewController {
          Init position of the scene - single tap by two fingers
          Increase value of FOV      - swipe up
          Decrease value of FOV      - swipe down
+         Rewind backward            - swipe left
+         Rewind forward             - swipe right
          Dismiss video controller   - swipe down by two fingers
          */
 
@@ -227,6 +313,18 @@ class VideoViewController: UIViewController {
         swipeDown.direction = .down
         swipeDown.numberOfTouchesRequired = 1
         view.addGestureRecognizer(swipeDown)
+
+        let swipeLeft = UISwipeGestureRecognizer(target: self,
+                                                 action: #selector(handleRewindBackward(_:)))
+        swipeLeft.direction = .left
+        swipeLeft.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self,
+                                                 action: #selector(handleRewindForward(_:)))
+        swipeRight.direction = .right
+        swipeRight.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(swipeRight)
 
         let swipeDownTwoFingers = UISwipeGestureRecognizer(target: self,
                                                            action: #selector(handleDismiss(_:)))
@@ -278,6 +376,24 @@ class VideoViewController: UIViewController {
                 cameraNodeLeft.camera!.fieldOfView -= 5
                 cameraNodeRight.camera!.fieldOfView -= 5
             }
+        }
+    }
+
+    /** Rewind backward */
+    @objc private func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+
+        if gestureRecognizer.state == .ended {
+            seekBackward(by: 20)
+        }
+    }
+
+    /** Rewind forward */
+    @objc private func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+
+        if gestureRecognizer.state == .ended {
+            seekForward(by: 20)
         }
     }
 
