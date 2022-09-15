@@ -136,12 +136,12 @@ class VideoViewController: UIViewController {
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = document?.localizedName
 
-        if let image = UIImage(named: "picture.jpg") {
-            nowPlayingInfo[MPMediaItemPropertyArtwork] =
-            MPMediaItemArtwork(boundsSize: image.size) { size in
-                return image
-            }
-        }
+//        if let image = UIImage(named: "picture.jpg") {
+//            nowPlayingInfo[MPMediaItemPropertyArtwork] =
+//            MPMediaItemArtwork(boundsSize: image.size) { size in
+//                return image
+//            }
+//        }
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = videoPlayer.currentItem?.currentTime().seconds
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = videoPlayer.currentItem?.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = videoPlayer.rate
