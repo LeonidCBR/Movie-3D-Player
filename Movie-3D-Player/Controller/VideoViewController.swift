@@ -27,7 +27,11 @@ class VideoViewController: UIViewController {
 
     weak var cameraNodeLeft: SCNNode!
     weak var cameraNodeRight: SCNNode!
+
+    // TODO: - Move to settings
     let fieldOfView = 85.0
+    // The space between left and right views
+    let space: CGFloat = 20.0
 
     weak var domeNodeLeft: SCNNode!
     weak var domeNodeRight: SCNNode!
@@ -57,6 +61,20 @@ class VideoViewController: UIViewController {
 
     // MARK: - Lifecycle
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscapeLeft
+
+        // TODO: - Fix a bug!
+        // There is a bug with configuration of views!
+        // The view becomes upside down
+//        return .landscape
+    }
+
+    // For what???
+//    override var shouldAutorotate: Bool {
+//        return false
+//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -80,14 +98,43 @@ class VideoViewController: UIViewController {
         isPlaying = true
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //isPlaying = true
+    /*
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // consider to move configurations of views here
+        // but remember this method gets triggered every appear
     }
+    */
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        //isPlaying = false
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("Configure frames...")
+        print("safeAreaLayoutGuide frame: \(view.safeAreaLayoutGuide.layoutFrame)")
+        print("view's frame: \(view.frame)")
+
+        let height = view.frame.height
+        print("height = \(height)")
+
+        let halfWidth = view.frame.width / 2
+//        let halfWidth = view.safeAreaLayoutGuide.layoutFrame.width / 2 // - space / 2
+
+        print("half of width = \(halfWidth)")
+        print("mix X = \(view.safeAreaLayoutGuide.layoutFrame.minX)")
+        let widthOfBox = halfWidth - space / 2 - view.safeAreaLayoutGuide.layoutFrame.minX
+        print("width of box = \(widthOfBox)")
+        let length = height < widthOfBox ? height : widthOfBox
+        print("length of box = \(length)")
+
+        let xPosLeftEye = halfWidth - length - (space/2) // + safe delta (50.0)
+        let yPosLeftEye = (height - length) / 2
+        sceneViewLeft.frame = CGRect(x: xPosLeftEye, y: yPosLeftEye, width: length, height: length)
+
+        let xPosRightEye = halfWidth + (space/2)
+        let yPosRigthEye = (height - length) / 2
+        sceneViewRight.frame = CGRect(x: xPosRightEye, y: yPosRigthEye, width: length, height: length)
+
+        print("Left view's frame: \(sceneViewLeft.frame)")
+        print("Rigth view's frame: \(sceneViewRight.frame)")
     }
 
     deinit {
@@ -150,14 +197,6 @@ class VideoViewController: UIViewController {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscapeLeft
-    }
-
-    override var shouldAutorotate: Bool {
-        return false
-    }
-
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         guard let key = presses.first?.key else { return }
 
@@ -195,21 +234,15 @@ class VideoViewController: UIViewController {
     }
 
     private func configureSceneViews() {
-        let stackView = UIStackView(arrangedSubviews: [sceneViewLeft, sceneViewRight])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 5.0
-        view.addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        sceneViewLeft.translatesAutoresizingMaskIntoConstraints = false
+        sceneViewRight.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sceneViewLeft)
+        view.addSubview(sceneViewRight)
     }
 
     private func createVideoScene() {
         // Create sprite kit scene for video playing
+        // TODO: Should we get these parameters from the video
         let width = 3840
         let height = 1920
         videoSKScene = SKScene(size: CGSize(width: width, height: height))
@@ -241,6 +274,17 @@ class VideoViewController: UIViewController {
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
         motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] deviceMotion, error in
             guard let currentAttitude = deviceMotion?.attitude else { return }
+
+
+            // TODO: Fix head's rotation!
+
+            /*
+            Pitch (the x component) is the rotation about the node’s x-axis.
+            Yaw (the y component) is the rotation about the node’s y-axis.
+            Roll (the z component) is the rotation about the node’s z-axis.
+            */
+
+
             // look up at 90 degrees
             let roll = Float(.pi * 0.5 + currentAttitude.roll)
             let yaw = Float(currentAttitude.yaw)
@@ -253,14 +297,10 @@ class VideoViewController: UIViewController {
     }
 
     private func play() {
-        sceneViewLeft.isPlaying = true
-        sceneViewRight.isPlaying = true
         videoPlayer.play()
     }
 
     private func pause() {
-        sceneViewLeft.isPlaying = false
-        sceneViewRight.isPlaying = false
         videoPlayer.pause()
     }
 
