@@ -423,8 +423,8 @@ extension VideoViewController: SCNSceneRendererDelegate {
                                           y: Float(cmQuaternion.x),
                                           z: Float(cmQuaternion.z),
                                           w: Float(cmQuaternion.w))
-        cameraNodeLeft.orientation = scnQuaternion
-        cameraNodeRight.orientation = scnQuaternion
+        let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
+        cameraNode!.orientation = scnQuaternion
     }
 
 }
