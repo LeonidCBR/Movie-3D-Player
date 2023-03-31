@@ -415,7 +415,9 @@ extension VideoViewController: SCNSceneRendererDelegate {
 
     // Capture quaternion via motion manager 60 times per second
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        guard let deviceMotion = motionManager.deviceMotion else {
+        guard let deviceMotion = motionManager.deviceMotion,
+              let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
+        else {
             return
         }
         let cmQuaternion = deviceMotion.attitude.quaternion
@@ -423,8 +425,7 @@ extension VideoViewController: SCNSceneRendererDelegate {
                                           y: Float(cmQuaternion.x),
                                           z: Float(cmQuaternion.z),
                                           w: Float(cmQuaternion.w))
-        let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
-        cameraNode!.orientation = scnQuaternion
+        cameraNode.orientation = scnQuaternion
     }
 
 }
