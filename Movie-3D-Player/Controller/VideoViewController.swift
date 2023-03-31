@@ -306,16 +306,8 @@ class VideoViewController: UIViewController {
     @objc private func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-
-            // TODO: - Rotate dome nodes!!! by Z?
-            print("Rotate dome nodes")
-            print("x=\(cameraNodeLeft.eulerAngles.x)")
-            print("y=\(cameraNodeLeft.eulerAngles.y)")
-            print("z=\(cameraNodeLeft.eulerAngles.z)")
-//            domeNodeRight.eulerAngles = SCNVector3Make(-.pi/2, 0, .pi)
-
-//            domeNodeLeft.eulerAngles.y = cameraNodeLeft.eulerAngles.y
-//            domeNodeRight.eulerAngles.y = cameraNodeRight.eulerAngles.y + .pi
+            domeNodeLeft.eulerAngles.z = cameraNodeLeft.eulerAngles.z
+            domeNodeRight.eulerAngles.z = cameraNodeRight.eulerAngles.z + .pi
         }
     }
 
