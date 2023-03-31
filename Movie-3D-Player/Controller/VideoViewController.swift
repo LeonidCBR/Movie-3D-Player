@@ -13,29 +13,23 @@ import AVFoundation
 import MediaPlayer
 
 
-// TODO: Implement a single view
-
-
 class VideoViewController: UIViewController {
 
     // MARK: - Properties
-
-    let sceneNameLeft = "SceneKit Asset Catalog.scnassets/DomeZL.dae"
-    let sceneNameRight = "SceneKit Asset Catalog.scnassets/DomeZR.dae"
-    var sceneViewLeft: SCNView!
-    var sceneViewRight: SCNView!
-
-    weak var cameraNodeLeft: SCNNode!
-    weak var cameraNodeRight: SCNNode!
 
     // TODO: - Move to settings
     let fieldOfView = 85.0
     // The space between left and right views
     let space: CGFloat = 20.0
 
+    let sceneNameLeft = "SceneKit Asset Catalog.scnassets/DomeZL.dae"
+    let sceneNameRight = "SceneKit Asset Catalog.scnassets/DomeZR.dae"
+    var sceneViewLeft: SCNView!
+    var sceneViewRight: SCNView!
+    weak var cameraNodeLeft: SCNNode!
+    weak var cameraNodeRight: SCNNode!
     weak var domeNodeLeft: SCNNode!
     weak var domeNodeRight: SCNNode!
-
     var videoSKScene: SKScene!
     let videoPlayer = AVPlayer()
     let motionManager = CMMotionManager()
@@ -51,9 +45,9 @@ class VideoViewController: UIViewController {
     var isPlaying = false {
         didSet {
             if isPlaying {
-                play()
+                videoPlayer.play()
             } else {
-                pause()
+                videoPlayer.pause()
             }
         }
     }
@@ -62,26 +56,18 @@ class VideoViewController: UIViewController {
     // MARK: - Lifecycle
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscapeLeft
-
-        // TODO: - Fix a bug!
-        // There is a bug with configuration of views!
-        // The view becomes upside down
-//        return .landscape
+        return .landscapeRight
     }
-
-    // For what???
-//    override var shouldAutorotate: Bool {
-//        return false
-//    }
-
+/*
+    override var shouldAutorotate: Bool {
+        return false
+    }
+*/
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .black
         UIApplication.shared.isIdleTimerDisabled = true
         videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
-
         sceneViewLeft = createScene(named: sceneNameLeft)
         sceneViewRight = createScene(named: sceneNameRight)
         configureNodes()
@@ -90,86 +76,121 @@ class VideoViewController: UIViewController {
         createVideoScene()
         configureVideoNode(at: sceneViewLeft)
         configureVideoNode(at: sceneViewRight)
-        configureMotionManager()
         configureGestures()
-
         setupRemoteTransportControls()
         setupNowPlaying()
         isPlaying = true
     }
 
-    /*
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // consider to move configurations of views here
-        // but remember this method gets triggered every appear
+        sceneViewLeft.isPlaying = true
+        sceneViewRight.isPlaying = true
+        motionManager.startDeviceMotionUpdates(using: .xMagneticNorthZVertical)
     }
-    */
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        motionManager.stopDeviceMotionUpdates()
+        sceneViewLeft.isPlaying = false
+        sceneViewRight.isPlaying = false
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("Configure frames...")
-        print("safeAreaLayoutGuide frame: \(view.safeAreaLayoutGuide.layoutFrame)")
-        print("view's frame: \(view.frame)")
-
+        // calculate with of the scene's views
         let height = view.frame.height
-        print("height = \(height)")
-
         let halfWidth = view.frame.width / 2
-//        let halfWidth = view.safeAreaLayoutGuide.layoutFrame.width / 2 // - space / 2
-
-        print("half of width = \(halfWidth)")
-        print("mix X = \(view.safeAreaLayoutGuide.layoutFrame.minX)")
-        let widthOfBox = halfWidth - space / 2 - view.safeAreaLayoutGuide.layoutFrame.minX
-        print("width of box = \(widthOfBox)")
-        let length = height < widthOfBox ? height : widthOfBox
-        print("length of box = \(length)")
-
+        let widthOfSceneView = halfWidth - space / 2 - view.safeAreaLayoutGuide.layoutFrame.minX
+        let length = height < widthOfSceneView ? height : widthOfSceneView
+        // calculate position of the left scene's view
         let xPosLeftEye = halfWidth - length - (space/2) // + safe delta (50.0)
         let yPosLeftEye = (height - length) / 2
         sceneViewLeft.frame = CGRect(x: xPosLeftEye, y: yPosLeftEye, width: length, height: length)
-
+        // calculate position of the right scene's view
         let xPosRightEye = halfWidth + (space/2)
         let yPosRigthEye = (height - length) / 2
         sceneViewRight.frame = CGRect(x: xPosRightEye, y: yPosRigthEye, width: length, height: length)
-
-        print("Left view's frame: \(sceneViewLeft.frame)")
-        print("Rigth view's frame: \(sceneViewRight.frame)")
     }
 
     deinit {
-        print("DEBUG: deinit video view controller.")
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
 
     // MARK: - Methods
 
-    func setupRemoteTransportControls() {
-        // Get the shared MPRemoteCommandCenter
-        let commandCenter = MPRemoteCommandCenter.shared()
+    func createScene(named sceneName: String) -> SCNView {
+        let scene = SCNScene(named: sceneName)!
+        let sceneView = SCNView()
+        sceneView.scene = scene
+        sceneView.backgroundColor = .black
+        sceneView.allowsCameraControl = false
+//        sceneView.isPlaying = true
+        return sceneView
+    }
 
+    func configureNodes() {
+        domeNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
+        domeNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
+        domeNodeLeft.eulerAngles = SCNVector3Make(-.pi/2, 0, 0)
+        domeNodeRight.eulerAngles = SCNVector3Make(-.pi/2, 0, .pi)
+    }
+
+    func configureCameras() {
+        cameraNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
+        cameraNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
+        cameraNodeLeft.camera!.fieldOfView = fieldOfView
+        cameraNodeRight.camera!.fieldOfView = fieldOfView
+    }
+
+    func configureSceneViews() {
+        sceneViewLeft.translatesAutoresizingMaskIntoConstraints = false
+        sceneViewRight.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sceneViewLeft)
+        view.addSubview(sceneViewRight)
+        sceneViewLeft.delegate = self
+        sceneViewRight.delegate = self
+    }
+
+    func createVideoScene() {
+        // Create sprite kit scene for video playing
+
+        // TODO: Should we get these parameters from the video
+
+        let width = 3840
+        let height = 1920
+        videoSKScene = SKScene(size: CGSize(width: width, height: height))
+        videoSKScene.scaleMode = .aspectFit
+        let videoSKNode = SKVideoNode(avPlayer: videoPlayer)
+        videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
+        videoSKNode.size = videoSKScene.size
+        videoSKScene.addChild(videoSKNode)
+    }
+
+    private func configureVideoNode(at sceneView: SCNView) {
+        let sphereNode = sceneView.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
+        sphereNode.geometry!.firstMaterial!.diffuse.contents = videoSKScene
+    }
+
+    func setupRemoteTransportControls() {
+        let commandCenter = MPRemoteCommandCenter.shared()
         // Add handler for Play Command
         commandCenter.playCommand.addTarget { [weak self] event in
-
             guard let self = self else {
                 return .noActionableNowPlayingItem
             }
-
             if self.videoPlayer.rate == 0.0 {
                 self.videoPlayer.play()
                 return .success
             }
             return .commandFailed
         }
-
         // Add handler for Pause Command
         commandCenter.pauseCommand.addTarget { [weak self] event in
-
             guard let self = self else {
                 return .noActionableNowPlayingItem
             }
-
             if self.videoPlayer.rate == 1.0 {
                 self.videoPlayer.pause()
                 return .success
@@ -179,10 +200,8 @@ class VideoViewController: UIViewController {
     }
 
     func setupNowPlaying() {
-        // Define Now Playing Info
         var nowPlayingInfo = [String : Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = document?.localizedName
-
 //        if let image = UIImage(named: "picture.jpg") {
 //            nowPlayingInfo[MPMediaItemPropertyArtwork] =
 //            MPMediaItemArtwork(boundsSize: image.size) { size in
@@ -192,14 +211,11 @@ class VideoViewController: UIViewController {
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = videoPlayer.currentItem?.currentTime().seconds
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = videoPlayer.currentItem?.duration.seconds
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = videoPlayer.rate
-
-        // Set the metadata
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         guard let key = presses.first?.key else { return }
-
         switch key.keyCode {
         case .keyboardLeftArrow:
             seekBackward(by: 20)
@@ -210,126 +226,28 @@ class VideoViewController: UIViewController {
         }
     }
 
-    private func createScene(named sceneName: String) -> SCNView {
-        let scene = SCNScene(named: sceneName)!
-        let sceneView = SCNView()
-        sceneView.scene = scene
-        sceneView.backgroundColor = .black
-        sceneView.allowsCameraControl = false
-        sceneView.isPlaying = true
-        return sceneView
-    }
-
-    private func configureNodes() {
-        domeNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
-        domeNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
-    }
-
-    private func configureCameras() {
-        cameraNodeLeft = sceneViewLeft.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
-        cameraNodeRight = sceneViewRight.scene!.rootNode.childNode(withName: "Camera", recursively: false)!
-
-        cameraNodeLeft.camera!.fieldOfView = fieldOfView
-        cameraNodeRight.camera!.fieldOfView = fieldOfView
-    }
-
-    private func configureSceneViews() {
-        sceneViewLeft.translatesAutoresizingMaskIntoConstraints = false
-        sceneViewRight.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(sceneViewLeft)
-        view.addSubview(sceneViewRight)
-    }
-
-    private func createVideoScene() {
-        // Create sprite kit scene for video playing
-        // TODO: Should we get these parameters from the video
-        let width = 3840
-        let height = 1920
-        videoSKScene = SKScene(size: CGSize(width: width, height: height))
-        videoSKScene.scaleMode = .aspectFit
-        let videoSKNode = SKVideoNode(avPlayer: videoPlayer)
-        videoSKNode.position = CGPoint(x: width / 2, y: height / 2)
-        videoSKNode.size = videoSKScene.size
-        videoSKScene.addChild(videoSKNode)
-    }
-/*
-    private func createPictureScene() {
-        // Create sprite kit scene for picture
-        let width = 4096
-        let height = 2048
-        videoSKScene = SKScene(size: CGSize(width: width, height: height))
-        videoSKScene.scaleMode = .aspectFit
-        let pictureSKNode = SKSpriteNode(imageNamed: "picture.jpg")
-        pictureSKNode.position = CGPoint(x: width / 2, y: height / 2)
-        pictureSKNode.size = videoSKScene.size
-        videoSKScene.addChild(pictureSKNode)
-    }
-*/
-    private func configureVideoNode(at sceneView: SCNView) {
-        let sphereNode = sceneView.scene!.rootNode.childNode(withName: "Sphere", recursively: false)!
-        sphereNode.geometry!.firstMaterial!.diffuse.contents = videoSKScene
-    }
-
-    private func configureMotionManager() {
-        motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
-        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] deviceMotion, error in
-            guard let currentAttitude = deviceMotion?.attitude else { return }
-
-
-            // TODO: Fix head's rotation!
-
-            /*
-            Pitch (the x component) is the rotation about the node’s x-axis.
-            Yaw (the y component) is the rotation about the node’s y-axis.
-            Roll (the z component) is the rotation about the node’s z-axis.
-            */
-
-
-            // look up at 90 degrees
-            let roll = Float(.pi * 0.5 + currentAttitude.roll)
-            let yaw = Float(currentAttitude.yaw)
-            let yawRight = yaw + .pi
-            let pitch = Float(currentAttitude.pitch)
-            self?.cameraNodeLeft.eulerAngles = SCNVector3(x: roll, y: -yaw, z: pitch)
-            self?.cameraNodeRight.eulerAngles = SCNVector3(x: roll, y: -yawRight, z: -pitch)
-        }
-
-    }
-
-    private func play() {
-        videoPlayer.play()
-    }
-
-    private func pause() {
-        videoPlayer.pause()
-    }
-
     private func seekBackward(by seconds: CMTimeValue) {
-        // seek backward by 20 seconds
-        let delta = CMTime(value: 20, timescale: 1)
+        let delta = CMTime(value: seconds, timescale: 1)
         let newTime = videoPlayer.currentTime() - delta
         videoPlayer.seek(to: newTime)
     }
 
     private func seekForward(by seconds: CMTimeValue) {
-        // seek forward by 20 seconds
-        let delta = CMTime(value: 20, timescale: 1)
+        let delta = CMTime(value: seconds, timescale: 1)
         let newTime = videoPlayer.currentTime() + delta
         videoPlayer.seek(to: newTime)
     }
 
+    /**
+     Play/pause                 - single tap
+     Init position of the scene - single tap by two fingers
+     Increase value of FOV      - swipe up
+     Decrease value of FOV      - swipe down
+     Rewind backward            - swipe left
+     Rewind forward             - swipe right
+     Dismiss video controller   - swipe down by two fingers
+     */
     private func configureGestures() {
-
-        /*
-         Play/pause                 - single tap
-         Init position of the scene - single tap by two fingers
-         Increase value of FOV      - swipe up
-         Decrease value of FOV      - swipe down
-         Rewind backward            - swipe left
-         Rewind forward             - swipe right
-         Dismiss video controller   - swipe down by two fingers
-         */
-
         let singleTap = UITapGestureRecognizer(target: self,
                                                action: #selector(handlePlay(_:)))
         singleTap.numberOfTapsRequired = 1
@@ -379,7 +297,6 @@ class VideoViewController: UIViewController {
     /** Play/pause */
     @objc private func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             isPlaying.toggle()
         }
@@ -388,17 +305,23 @@ class VideoViewController: UIViewController {
     /** Init view of the scene by rotating the sphere according the camera's view */
     @objc private func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
-            domeNodeLeft.eulerAngles.y = cameraNodeLeft.eulerAngles.y
-            domeNodeRight.eulerAngles.y = cameraNodeRight.eulerAngles.y + .pi
+
+            // TODO: - Rotate dome nodes!!! by Z?
+            print("Rotate dome nodes")
+            print("x=\(cameraNodeLeft.eulerAngles.x)")
+            print("y=\(cameraNodeLeft.eulerAngles.y)")
+            print("z=\(cameraNodeLeft.eulerAngles.z)")
+//            domeNodeRight.eulerAngles = SCNVector3Make(-.pi/2, 0, .pi)
+
+//            domeNodeLeft.eulerAngles.y = cameraNodeLeft.eulerAngles.y
+//            domeNodeRight.eulerAngles.y = cameraNodeRight.eulerAngles.y + .pi
         }
     }
 
     /** Increase value of FOV */
     @objc private func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             if cameraNodeLeft.camera!.fieldOfView < 115 {
             cameraNodeLeft.camera!.fieldOfView += 5
@@ -410,7 +333,6 @@ class VideoViewController: UIViewController {
     /** Decrease value of FOV */
     @objc private func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             if cameraNodeLeft.camera!.fieldOfView > 40 {
                 cameraNodeLeft.camera!.fieldOfView -= 5
@@ -422,7 +344,6 @@ class VideoViewController: UIViewController {
     /** Rewind backward */
     @objc private func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             seekBackward(by: 20)
         }
@@ -431,7 +352,6 @@ class VideoViewController: UIViewController {
     /** Rewind forward */
     @objc private func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             seekForward(by: 20)
         }
@@ -440,12 +360,23 @@ class VideoViewController: UIViewController {
     /** Dismiss controller */
     @objc private func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
-
         if gestureRecognizer.state == .ended {
             dismiss(animated: true)
         }
     }
-
+/*
+    private func createPictureScene() {
+        // Create sprite kit scene for picture
+        let width = 4096
+        let height = 2048
+        videoSKScene = SKScene(size: CGSize(width: width, height: height))
+        videoSKScene.scaleMode = .aspectFit
+        let pictureSKNode = SKSpriteNode(imageNamed: "picture.jpg")
+        pictureSKNode.position = CGPoint(x: width / 2, y: height / 2)
+        pictureSKNode.size = videoSKScene.size
+        videoSKScene.addChild(pictureSKNode)
+    }
+*/
 /*
     private func makePlaneNode(scene: SKScene) -> SCNNode {
         print("DEBUG: \(#function)")
@@ -485,3 +416,23 @@ class VideoViewController: UIViewController {
 */
 }
 
+
+// MARK: - SCNSceneRendererDelegate
+
+extension VideoViewController: SCNSceneRendererDelegate {
+
+    // Capture quaternion via motion manager 60 times per second
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let deviceMotion = motionManager.deviceMotion else {
+            return
+        }
+        let cmQuaternion = deviceMotion.attitude.quaternion
+        let scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
+                                          y: Float(cmQuaternion.x),
+                                          z: Float(cmQuaternion.z),
+                                          w: Float(cmQuaternion.w))
+        cameraNodeLeft.orientation = scnQuaternion
+        cameraNodeRight.orientation = scnQuaternion
+    }
+
+}
