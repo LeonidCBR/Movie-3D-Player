@@ -1,6 +1,6 @@
 //
 //  Document.swift
-//  3Dplayer
+//  Movie-3D-Player
 //
 //  Created by Яна Латышева on 13.09.2021.
 //

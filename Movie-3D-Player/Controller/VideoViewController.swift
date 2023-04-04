@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  3Dplayer
+//  Movie-3D-Player
 //
 //  Created by Яна Латышева on 10.09.2021.
 //
@@ -18,9 +18,9 @@ class VideoViewController: UIViewController {
     // MARK: - Properties
 
     // TODO: - Move to settings
-    let fieldOfView = 85.0
+    let fieldOfView: CGFloat // = 85.0
     // The space between left and right views
-    let space: CGFloat = 20.0
+    let space: CGFloat // = 20.0
 
     let sceneNameLeft = "SceneKit Asset Catalog.scnassets/DomeZL.dae"
     let sceneNameRight = "SceneKit Asset Catalog.scnassets/DomeZR.dae"
@@ -54,6 +54,16 @@ class VideoViewController: UIViewController {
 
 
     // MARK: - Lifecycle
+
+    init(withFieldOfView fov: CGFloat, andSpace space: CGFloat) {
+        self.fieldOfView = fov
+        self.space = space
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        return nil
+    }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeRight

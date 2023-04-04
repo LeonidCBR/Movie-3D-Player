@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  3Dplayer
+//  Movie-3D-Player
 //
 //  Created by Яна Латышева on 10.09.2021.
 //
