@@ -1,6 +1,6 @@
 //
 //  DocumentBrowserViewController.swift
-//  3Dplayer
+//  Movie-3D-Player
 //
 //  Created by Яна Латышева on 13.09.2021.
 //
@@ -18,13 +18,16 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         allowsDocumentCreation = false
         allowsPickingMultipleItems = false
 
+        // TODO: Find settings image
+
+        let settingsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(settingsButtonTapped))
+        additionalTrailingNavigationBarButtonItems = [settingsBarButtonItem]
+
         // Update the style of the UIDocumentBrowserViewController
         // browserUserInterfaceStyle = .dark
         // view.tintColor = .white
 
         // Specify the allowed content types of your application via the Info.plist.
-
-        // Do any additional setup after loading the view.
     }
 
 
@@ -59,15 +62,23 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
     }
 
-    // MARK: Document Presentation
+    // MARK: Video Presentation
 
     func presentDocument(at documentURL: URL) {
 
-        let videoViewController = VideoViewController() // DocumentViewController()
+        let videoViewController = VideoViewController(withFieldOfView: 85.0, andSpace: 20.0)
         videoViewController.document = Document(fileURL: documentURL)
         videoViewController.modalPresentationStyle = .fullScreen
-
         present(videoViewController, animated: true, completion: nil)
+    }
+
+
+    // MARK: - Selectors
+
+    @objc func settingsButtonTapped() {
+        let settingsViewController = SettingsViewController(withFieldOfView: 85.0, andSpace: 20.0)
+        let navigationController = UINavigationController(rootViewController: settingsViewController)
+        present(navigationController, animated: true, completion: nil)
     }
 }
 
