@@ -11,9 +11,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         delegate = self
-
         allowsDocumentCreation = false
         allowsPickingMultipleItems = false
 
@@ -50,29 +48,29 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     func documentBrowser(_ controller: UIDocumentBrowserViewController, didPickDocumentsAt documentURLs: [URL]) {
         guard let sourceURL = documentURLs.first else { return }
-
-        // Present the Document View Controller for the first document that was picked.
-        // If you support picking multiple items, make sure you handle them all.
-        presentDocument(at: sourceURL)
+        presentVideo(at: sourceURL)
     }
 
     func documentBrowser(_ controller: UIDocumentBrowserViewController,
                          didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
         // Present the Document View Controller for the new newly created document
-        presentDocument(at: destinationURL)
+        presentVideo(at: destinationURL)
     }
 
     func documentBrowser(_ controller: UIDocumentBrowserViewController,
                          failedToImportDocumentAt documentURL: URL, error: Error?) {
         // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
+        // TODO: - Show error message
+        print("DEBUG: ERROR: Import is failed!")
     }
 
     // MARK: Video Presentation
 
-    func presentDocument(at documentURL: URL) {
-
-        let videoViewController = VideoViewController(withFieldOfView: 85.0, andSpace: 20.0)
-        videoViewController.document = Document(fileURL: documentURL)
+    func presentVideo(at videoURL: URL) { // documentURL
+//        let videoViewController = VideoViewController(withFieldOfView: 85.0, andSpace: 20.0)
+//        videoViewController.document = Document(fileURL: documentURL)
+        let document = Document(fileURL: videoURL)
+        let videoViewController = VideoViewController(with: document)
         videoViewController.modalPresentationStyle = .fullScreen
         present(videoViewController, animated: true, completion: nil)
     }

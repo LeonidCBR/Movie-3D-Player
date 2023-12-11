@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF32B2702A90039C1A7 /* SceneProperties.swift */; };
 		D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959226EB7D6300455017 /* AppDelegate.swift */; };
 		D70C959526EB7D6300455017 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959426EB7D6300455017 /* SceneDelegate.swift */; };
 		D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959626EB7D6300455017 /* VideoViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B8500EF32B2702A90039C1A7 /* SceneProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProperties.swift; sourceTree = "<group>"; };
 		D70C958F26EB7D6300455017 /* Movie-3D-Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Movie-3D-Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70C959226EB7D6300455017 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D70C959426EB7D6300455017 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			children = (
 				D7CF882626EED340004D433F /* Document.swift */,
 				D79B16BB29DBC13900D35ADF /* SettingsOption.swift */,
+				B8500EF32B2702A90039C1A7 /* SceneProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 				D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */,
 				D79B16B929DB999A00D35ADF /* InputTextCell.swift in Sources */,
 				D70C959526EB7D6300455017 /* SceneDelegate.swift in Sources */,
+				B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */,
 				D7583BB329DA7BE600EC316C /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
