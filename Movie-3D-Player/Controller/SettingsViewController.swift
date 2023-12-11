@@ -54,7 +54,9 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
-        let cellOption = SettingsOption(rawValue: indexPath.row)!
+        guard let cellOption = SettingsOption(rawValue: indexPath.row) else {
+            return UITableViewCell()
+        }
         switch cellOption {
         case .fieldOfView:
             guard let fovCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
