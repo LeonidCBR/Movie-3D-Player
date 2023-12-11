@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
 
     override func viewDidLoad() {
@@ -20,7 +19,9 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
         // TODO: Find settings image
 
-        let settingsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(settingsButtonTapped))
+        let settingsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
+                                                    target: self,
+                                                    action: #selector(settingsButtonTapped))
         additionalTrailingNavigationBarButtonItems = [settingsBarButtonItem]
 
         // Update the style of the UIDocumentBrowserViewController
@@ -30,13 +31,15 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         // Specify the allowed content types of your application via the Info.plist.
     }
 
-
     // MARK: UIDocumentBrowserViewControllerDelegate
 
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didRequestDocumentCreationWithHandler importHandler: @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
+    func documentBrowser(_ controller: UIDocumentBrowserViewController,
+                         didRequestDocumentCreationWithHandler importHandler:
+                         @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         let newDocumentURL: URL? = nil
 
-        // Set the URL for the new document here. Optionally, you can present a template chooser before calling the importHandler.
+        // Set the URL for the new document here.
+        // Optionally, you can present a template chooser before calling the importHandler.
         // Make sure the importHandler is always called, even if the user cancels the creation request.
         if newDocumentURL != nil {
             importHandler(newDocumentURL, .move)
@@ -53,12 +56,14 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         presentDocument(at: sourceURL)
     }
 
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
+    func documentBrowser(_ controller: UIDocumentBrowserViewController,
+                         didImportDocumentAt sourceURL: URL, toDestinationURL destinationURL: URL) {
         // Present the Document View Controller for the new newly created document
         presentDocument(at: destinationURL)
     }
 
-    func documentBrowser(_ controller: UIDocumentBrowserViewController, failedToImportDocumentAt documentURL: URL, error: Error?) {
+    func documentBrowser(_ controller: UIDocumentBrowserViewController,
+                         failedToImportDocumentAt documentURL: URL, error: Error?) {
         // Make sure to handle the failed import appropriately, e.g., by presenting an error message to the user.
     }
 
@@ -72,7 +77,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         present(videoViewController, animated: true, completion: nil)
     }
 
-
     // MARK: - Selectors
 
     @objc func settingsButtonTapped() {
@@ -81,4 +85,3 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         present(navigationController, animated: true, completion: nil)
     }
 }
-

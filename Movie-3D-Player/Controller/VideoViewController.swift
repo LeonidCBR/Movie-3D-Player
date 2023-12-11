@@ -12,7 +12,6 @@ import CoreMotion
 import AVFoundation
 import MediaPlayer
 
-
 class VideoViewController: UIViewController {
 
     // MARK: - Properties
@@ -51,7 +50,6 @@ class VideoViewController: UIViewController {
             }
         }
     }
-
 
     // MARK: - Lifecycle
 
@@ -127,7 +125,6 @@ class VideoViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
-
     // MARK: - Methods
 
     func createScene(named sceneName: String) -> SCNView {
@@ -186,7 +183,7 @@ class VideoViewController: UIViewController {
     func setupRemoteTransportControls() {
         let commandCenter = MPRemoteCommandCenter.shared()
         // Add handler for Play Command
-        commandCenter.playCommand.addTarget { [weak self] event in
+        commandCenter.playCommand.addTarget { [weak self] _ in // event
             guard let self = self else {
                 return .noActionableNowPlayingItem
             }
@@ -197,7 +194,7 @@ class VideoViewController: UIViewController {
             return .commandFailed
         }
         // Add handler for Pause Command
-        commandCenter.pauseCommand.addTarget { [weak self] event in
+        commandCenter.pauseCommand.addTarget { [weak self] _ in // event
             guard let self = self else {
                 return .noActionableNowPlayingItem
             }
@@ -210,7 +207,7 @@ class VideoViewController: UIViewController {
     }
 
     func setupNowPlaying() {
-        var nowPlayingInfo = [String : Any]()
+        var nowPlayingInfo = [String: Any]()
         nowPlayingInfo[MPMediaItemPropertyTitle] = document?.localizedName
 //        if let image = UIImage(named: "picture.jpg") {
 //            nowPlayingInfo[MPMediaItemPropertyArtwork] =
@@ -300,7 +297,6 @@ class VideoViewController: UIViewController {
         swipeDownTwoFingers.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeDownTwoFingers)
     }
-
 
     // MARK: - Selectors
 
@@ -417,7 +413,6 @@ class VideoViewController: UIViewController {
     }
 */
 }
-
 
 // MARK: - SCNSceneRendererDelegate
 

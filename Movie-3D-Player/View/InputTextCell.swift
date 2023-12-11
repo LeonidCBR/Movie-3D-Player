@@ -7,17 +7,15 @@
 
 import UIKit
 
-
 protocol InputTextCellDelegate: AnyObject {
 
     func didGetValue(_ textField: UITextField, tableViewCell: UITableViewCell)
 }
 
-
 class InputTextCell: UITableViewCell {
 
     // MARK: - Properties
-    
+
     weak var delegate: InputTextCellDelegate?
 
     private let captionLabel: UILabel = {
@@ -26,31 +24,29 @@ class InputTextCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
+
     private let textField: UITextField = {
-        let tf = UITextField()
-        tf.font = UIFont.preferredFont(forTextStyle: .body)
-        tf.adjustsFontForContentSizeCategory = true
-        tf.borderStyle = .roundedRect
-        tf.keyboardType = .decimalPad
-        return tf
+        let text = UITextField()
+        text.font = UIFont.preferredFont(forTextStyle: .body)
+        text.adjustsFontForContentSizeCategory = true
+        text.borderStyle = .roundedRect
+        text.keyboardType = .decimalPad
+        return text
     }()
 
-    
     // MARK: - Lifecycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
-    
+
     // MARK: - Methods
-    
+
     private func configureUI() {
         selectionStyle = .none
         clipsToBounds = true
@@ -80,7 +76,6 @@ class InputTextCell: UITableViewCell {
         ])
     }
 
-
     func setTextCaptionLabel(to text: String) {
         captionLabel.text = text
     }
@@ -91,47 +86,43 @@ class InputTextCell: UITableViewCell {
 
 }
 
-
 // MARK: - UITextFieldDelegate (Text validation)
 
 extension InputTextCell: UITextFieldDelegate {
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-        guard let ds = NumberFormatter().decimalSeparator else {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let decimalSeparator = NumberFormatter().decimalSeparator else {
             return true
         }
-        
         // Ignore input if text have contaned decimal separator ("," or ".") already
-        if string == ds {
-            if let text = textField.text, text.contains(ds) {
+        if string == decimalSeparator {
+            if let text = textField.text, text.contains(decimalSeparator) {
                 return false
             }
         }
-        
         // Ignore input if text have nore then 4 digits after decimal separator
-        if let _ = Int(string) {
-            if let text = textField.text, text.split(separator: Character(ds)).count >= 2, text.split(separator: Character(ds))[1].count >= 4 {
+        if Int(string) != nil {
+            if let text = textField.text,
+               text.split(separator: Character(decimalSeparator)).count >= 2,
+               text.split(separator: Character(decimalSeparator))[1].count >= 4 {
                 return false
             }
         }
-        
         return true
     }
-    
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         delegate?.didGetValue(textField, tableViewCell: self)
     }
 
-    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-
         // Clear text field if it's text equals 0
         if let value = Double(textField.text ?? ""), value == 0 {
             textField.text = ""
         }
-
         return true
     }
+
 }

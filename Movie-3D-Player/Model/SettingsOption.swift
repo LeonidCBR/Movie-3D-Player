@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum SettingsOption: Int, CaseIterable, CustomStringConvertible {
     case fieldOfView
     case space
