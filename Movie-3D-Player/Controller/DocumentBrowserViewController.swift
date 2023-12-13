@@ -14,19 +14,11 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         delegate = self
         allowsDocumentCreation = false
         allowsPickingMultipleItems = false
-
-        // TODO: Find settings image
-
-        let settingsBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
+        let settingsBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"),
+                                                    style: .plain,
                                                     target: self,
                                                     action: #selector(settingsButtonTapped))
         additionalTrailingNavigationBarButtonItems = [settingsBarButtonItem]
-
-        // Update the style of the UIDocumentBrowserViewController
-        // browserUserInterfaceStyle = .dark
-        // view.tintColor = .white
-
-        // Specify the allowed content types of your application via the Info.plist.
     }
 
     // MARK: UIDocumentBrowserViewControllerDelegate
@@ -35,7 +27,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                          didRequestDocumentCreationWithHandler importHandler:
                          @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         let newDocumentURL: URL? = nil
-
+        // TODO: Should we use it
         // Set the URL for the new document here.
         // Optionally, you can present a template chooser before calling the importHandler.
         // Make sure the importHandler is always called, even if the user cancels the creation request.
