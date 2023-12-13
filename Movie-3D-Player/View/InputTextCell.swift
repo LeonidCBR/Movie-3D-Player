@@ -8,7 +8,6 @@
 import UIKit
 
 protocol InputTextCellDelegate: AnyObject {
-
     func didGetValue(_ textField: UITextField, tableViewCell: UITableViewCell)
 }
 
@@ -18,14 +17,14 @@ class InputTextCell: UITableViewCell {
 
     weak var delegate: InputTextCellDelegate?
 
-    private let captionLabel: UILabel = {
+    let captionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
 
-    private let textField: UITextField = {
+    let textField: UITextField = {
         let text = UITextField()
         text.font = UIFont.preferredFont(forTextStyle: .body)
         text.adjustsFontForContentSizeCategory = true
@@ -47,7 +46,7 @@ class InputTextCell: UITableViewCell {
 
     // MARK: - Methods
 
-    private func configureUI() {
+    func configureUI() {
         selectionStyle = .none
         clipsToBounds = true
         textField.delegate = self

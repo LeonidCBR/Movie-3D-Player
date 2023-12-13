@@ -66,9 +66,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     // MARK: Video Presentation
 
-    func presentVideo(at videoURL: URL) { // documentURL
-//        let videoViewController = VideoViewController(withFieldOfView: 85.0, andSpace: 20.0)
-//        videoViewController.document = Document(fileURL: documentURL)
+    func presentVideo(at videoURL: URL) {
         let document = Document(fileURL: videoURL)
         let videoViewController = VideoViewController(with: document)
         videoViewController.modalPresentationStyle = .fullScreen
@@ -78,7 +76,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
     // MARK: - Selectors
 
     @objc func settingsButtonTapped() {
-        let settingsViewController = SettingsViewController(withFieldOfView: 85.0, andSpace: 20.0)
+        let settingsViewController = SettingsViewController()
         let navigationController = UINavigationController(rootViewController: settingsViewController)
         present(navigationController, animated: true, completion: nil)
     }

@@ -17,9 +17,18 @@ class VideoViewController: UIViewController {
     // MARK: - Properties
     // TODO: - Consider to use ViewModel
 
-    let fieldOfView: CGFloat
+//    let fieldOfView = SettingsProperties.FieldOfView.defaultValue
+
     /// The space between left and right views
-    let space: CGFloat
+    let space: CGFloat = {
+        if let spaceObject = UserDefaults.standard.object(forKey: SettingsProperties.Space.id),
+           let spaceValue = (spaceObject as? CGFloat) {
+            return spaceValue
+        } else {
+            return SettingsProperties.Space.defaultValue
+        }
+    }()
+
     let videoPlayer: AVPlayer
     let motionManager: CMMotionManager
     let videoFile: Document
@@ -45,7 +54,6 @@ class VideoViewController: UIViewController {
                                                                    recursively: false) else {
             return SCNNode()
         }
-        cameraNode.camera?.fieldOfView = fieldOfView
         return cameraNode
     }()
 
@@ -54,7 +62,6 @@ class VideoViewController: UIViewController {
                                                                     recursively: false) else {
             return SCNNode()
         }
-        cameraNode.camera?.fieldOfView = fieldOfView
         return cameraNode
     }()
 
@@ -96,9 +103,6 @@ class VideoViewController: UIViewController {
 
     init(with video: Document) {
         self.videoFile = video
-        // TODO: Settings manager should provide this data
-        self.fieldOfView = 85.0
-        self.space = 20.0
         let videoItem = AVPlayerItem(url: video.fileURL)
         self.videoPlayer = AVPlayer(playerItem: videoItem)
         self.motionManager = CMMotionManager()
@@ -112,18 +116,17 @@ class VideoViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscapeRight
     }
-/*
-    override var shouldAutorotate: Bool {
-        return false
-    }
-*/
+
+//    override var shouldAutorotate: Bool {
+//        return false
+//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         UIApplication.shared.isIdleTimerDisabled = true
         videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
         initScene()
-        configureSceneViews()
         configureGestures()
         setupRemoteTransportControls()
         setupNowPlaying()
@@ -176,6 +179,8 @@ class VideoViewController: UIViewController {
         domeNodeLeft.geometry?.firstMaterial?.diffuse.contents = videoSKScene
         domeNodeRight.geometry?.firstMaterial?.diffuse.contents = videoSKScene
         initScenePosition()
+        configureSceneViews()
+        configureCameras()
     }
 
     func initScenePosition() {
@@ -190,6 +195,19 @@ class VideoViewController: UIViewController {
         view.addSubview(sceneViewRight)
         sceneViewLeft.delegate = self
         sceneViewRight.delegate = self
+    }
+
+    func configureCameras() {
+        // Set values from DB if it exists
+        if let fieldOfView = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.id),
+           let value = (fieldOfView as? CGFloat) {
+            cameraNodeLeft.camera?.fieldOfView = value
+            cameraNodeRight.camera?.fieldOfView = value
+        } else {
+            // Setup default values
+            cameraNodeLeft.camera?.fieldOfView = SettingsProperties.FieldOfView.defaultValue
+            cameraNodeRight.camera?.fieldOfView = SettingsProperties.FieldOfView.defaultValue
+        }
     }
 
     func setupRemoteTransportControls() {
@@ -245,13 +263,13 @@ class VideoViewController: UIViewController {
         }
     }
 
-    private func seekBackward(by seconds: CMTimeValue) {
+    func seekBackward(by seconds: CMTimeValue) {
         let delta = CMTime(value: seconds, timescale: 1)
         let newTime = videoPlayer.currentTime() - delta
         videoPlayer.seek(to: newTime)
     }
 
-    private func seekForward(by seconds: CMTimeValue) {
+    func seekForward(by seconds: CMTimeValue) {
         let delta = CMTime(value: seconds, timescale: 1)
         let newTime = videoPlayer.currentTime() + delta
         videoPlayer.seek(to: newTime)
@@ -266,7 +284,7 @@ class VideoViewController: UIViewController {
      Rewind forward             - swipe right
      Dismiss video controller   - swipe down by two fingers
      */
-    private func configureGestures() {
+    func configureGestures() {
         let singleTap = UITapGestureRecognizer(target: self,
                                                action: #selector(handlePlay(_:)))
         singleTap.numberOfTapsRequired = 1
@@ -313,7 +331,7 @@ class VideoViewController: UIViewController {
     // MARK: - Selectors
 
     /** Play/pause */
-    @objc private func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             isPlaying.toggle()
@@ -321,7 +339,7 @@ class VideoViewController: UIViewController {
     }
 
     /** Init view of the scene by rotating the sphere according the camera's view */
-    @objc private func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             initScenePosition()
@@ -329,37 +347,37 @@ class VideoViewController: UIViewController {
     }
 
     /** Increase value of FOV */
-    @objc private func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             if let leftCamera = cameraNodeLeft.camera,
-               leftCamera.fieldOfView < SceneProperties.FieldOfView.maxThreshold {
+               leftCamera.fieldOfView < SettingsProperties.FieldOfView.maxThreshold {
                 leftCamera.fieldOfView += 5
             }
             if let rightCamera = cameraNodeRight.camera,
-               rightCamera.fieldOfView < SceneProperties.FieldOfView.maxThreshold {
+               rightCamera.fieldOfView < SettingsProperties.FieldOfView.maxThreshold {
                 rightCamera.fieldOfView += 5
             }
         }
     }
 
     /** Decrease value of FOV */
-    @objc private func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             if let leftCamera = cameraNodeLeft.camera,
-               leftCamera.fieldOfView > SceneProperties.FieldOfView.minThreshold {
+               leftCamera.fieldOfView > SettingsProperties.FieldOfView.minThreshold {
                 leftCamera.fieldOfView -= 5
             }
             if let rightCamera = cameraNodeRight.camera,
-               rightCamera.fieldOfView > SceneProperties.FieldOfView.minThreshold {
+               rightCamera.fieldOfView > SettingsProperties.FieldOfView.minThreshold {
                 rightCamera.fieldOfView -= 5
             }
         }
     }
 
     /** Rewind backward */
-    @objc private func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             seekBackward(by: 20)
@@ -367,7 +385,7 @@ class VideoViewController: UIViewController {
     }
 
     /** Rewind forward */
-    @objc private func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             seekForward(by: 20)
@@ -375,7 +393,7 @@ class VideoViewController: UIViewController {
     }
 
     /** Dismiss controller */
-    @objc private func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             dismiss(animated: true)

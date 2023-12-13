@@ -15,9 +15,4 @@ struct SceneProperties {
     // TODO: Should we get these parameters from the video?
     static let width = 3840
     static let height = 1920
-
-    struct FieldOfView {
-        static let maxThreshold: CGFloat = 115
-        static let minThreshold: CGFloat = 40
-    }
 }

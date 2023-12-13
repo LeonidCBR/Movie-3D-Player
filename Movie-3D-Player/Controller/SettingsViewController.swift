@@ -9,11 +9,13 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
-    var fieldOfView: CGFloat // = 85.0
+    // TODO: Consider to get rid of these properties
+    var fieldOfView = SettingsProperties.FieldOfView.defaultValue
     // The space between left and right views
-    var space: CGFloat // = 20.0
-
+    var space = SettingsProperties.Space.defaultValue
     let inputTextCellIdentifier = "InputTextCellIdentifier"
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +30,19 @@ class SettingsViewController: UITableViewController {
          */
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        loadSettings()
     }
 
-    // MARK: - Lifecycle
-
-    init(withFieldOfView fov: CGFloat, andSpace space: CGFloat) {
-        self.fieldOfView = fov
-        self.space = space
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        return nil
+    /// Load settings from DB and update model if values exists
+    func loadSettings() {
+        if let fieldOfView = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.id),
+           let value = (fieldOfView as? CGFloat) {
+            self.fieldOfView = value
+        }
+        if let space = UserDefaults.standard.object(forKey: SettingsProperties.Space.id),
+        let value = (space as? CGFloat) {
+            self.space = value
+        }
     }
 
     // MARK: - Table view data source
@@ -53,10 +56,10 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell
         guard let cellOption = SettingsOption(rawValue: indexPath.row) else {
             return UITableViewCell()
         }
+        let cell: UITableViewCell
         switch cellOption {
         case .fieldOfView:
             guard let fovCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
@@ -103,60 +106,43 @@ class SettingsViewController: UITableViewController {
 
 extension SettingsViewController: InputTextCellDelegate {
     func didGetValue(_ textField: UITextField, tableViewCell: UITableViewCell) {
-        print("DEBUG: The value of text field: \(textField.textInputView)")
-        print("DEBUG: Tag: \(tableViewCell.tag)")
         guard let option = SettingsOption(rawValue: tableViewCell.tag) else {
             return
         }
         guard let text = textField.text,
         let value = Double(text) else {
-            //if .litersAmount == option { setLiters(to: refuelModel.liters) }
-            // TODO: Remove debug prints
-            print("DEBUG: Wrong value: \(textField.text)")
-
             // New value is incorrect. Set an old value
-            if .fieldOfView == option {
+            switch option {
+            case .fieldOfView:
                 setFieldOfView(to: fieldOfView)
-            }
-            if .space == option {
+            case .space:
                 setSpace(to: space)
             }
-
             return
         }
         switch option {
         case .fieldOfView:
             if value != fieldOfView {
-                print("DEBUG: Save FOV: \(value)")
+                guard value < SettingsProperties.FieldOfView.maxThreshold,
+                      value > SettingsProperties.FieldOfView.minThreshold else {
+                    // Reset to the old value
+                    setFieldOfView(to: fieldOfView)
+                    return
+                }
                 fieldOfView = value
-                // TODO: - save fov
-                // settingsManager.save(fov)
+                UserDefaults.standard.set(value, forKey: SettingsProperties.FieldOfView.id)
             }
         case .space:
             if value != space {
-                print("DEBUG: Save space: \(value)")
+                guard value < SettingsProperties.Space.maxThreshold,
+                      value > SettingsProperties.Space.minThreshold else {
+                    // Reset to the old value
+                    setSpace(to: space)
+                    return
+                }
                 space = value
-                // TODO: - save space
-                // settingsManager.save(space)
+                UserDefaults.standard.set(value, forKey: SettingsProperties.Space.id)
             }
         }
-        /*
-        guard let text = textField.text,
-              let value = Double(from: text)
-        else {
-            // Got wrong value. Set old values back to the text field
-            if .litersAmount == option { setLiters(to: refuelModel.liters) }
-            else if .cost == option { setCost(to: refuelModel.cost) }
-            else if .odometer == option { setOdometer(to: refuelModel.odometer) }
-            return
-        }
-
-        switch option {
-        case .litersAmount: refuelModel.liters = value // number.doubleValue
-        case .cost: refuelModel.cost = value // number.doubleValue
-        case .odometer: refuelModel.odometer = Int(value) // number.intValue
-        default: break
-        }
-        */
     }
 }
