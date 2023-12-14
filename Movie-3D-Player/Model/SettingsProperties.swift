@@ -23,4 +23,5 @@ struct SettingsProperties {
         static let minThreshold: CGFloat = 0
     }
 
+    static let actionSettingsKey = "ActionSettingsKey"
 }

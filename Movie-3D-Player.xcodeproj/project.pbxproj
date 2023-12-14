@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF32B2702A90039C1A7 /* SceneProperties.swift */; };
 		B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF52B2850210039C1A7 /* SettingsProperties.swift */; };
+		B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */; };
+		B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */; };
+		B8F1DE1C2B2AAC7300E134D3 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */; };
 		D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959226EB7D6300455017 /* AppDelegate.swift */; };
 		D70C959526EB7D6300455017 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959426EB7D6300455017 /* SceneDelegate.swift */; };
 		D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959626EB7D6300455017 /* VideoViewController.swift */; };
@@ -25,6 +28,9 @@
 /* Begin PBXFileReference section */
 		B8500EF32B2702A90039C1A7 /* SceneProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProperties.swift; sourceTree = "<group>"; };
 		B8500EF52B2850210039C1A7 /* SettingsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProperties.swift; sourceTree = "<group>"; };
+		B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
+		B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGesture.swift; sourceTree = "<group>"; };
+		B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
 		D70C958F26EB7D6300455017 /* Movie-3D-Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Movie-3D-Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70C959226EB7D6300455017 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D70C959426EB7D6300455017 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				D79B16B829DB999900D35ADF /* InputTextCell.swift */,
+				B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -108,6 +115,8 @@
 				D79B16BB29DBC13900D35ADF /* SettingsOption.swift */,
 				B8500EF32B2702A90039C1A7 /* SceneProperties.swift */,
 				B8500EF52B2850210039C1A7 /* SettingsProperties.swift */,
+				B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */,
+				B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -207,9 +216,12 @@
 			files = (
 				D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */,
 				D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */,
+				B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */,
 				D7CF882726EED340004D433F /* Document.swift in Sources */,
 				D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */,
 				D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */,
+				B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */,
+				B8F1DE1C2B2AAC7300E134D3 /* ActionCell.swift in Sources */,
 				D79B16B929DB999A00D35ADF /* InputTextCell.swift in Sources */,
 				D70C959526EB7D6300455017 /* SceneDelegate.swift in Sources */,
 				B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */,

@@ -8,18 +8,27 @@
 import UIKit
 
 class SettingsViewController: UITableViewController {
-
-    // TODO: Consider to get rid of these properties
+    let numberOfSettingsSections = 2
+    let commonSettingsSection = 0
+    let actionSettingsSection = 1
+    // TODO: Consider to create SettingsProvider
     var fieldOfView = SettingsProperties.FieldOfView.defaultValue
     // The space between left and right views
     var space = SettingsProperties.Space.defaultValue
     let inputTextCellIdentifier = "InputTextCellIdentifier"
+    let actionCellIdentifier = "ActionCellIdentifier"
+
+
+    // TODO: Testing
+    let actionSettings: [PlayerAction: PlayerGesture] = [.closeVC: .swipeDown,
+                                                         .play: .singleTap]
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(InputTextCell.self, forCellReuseIdentifier: inputTextCellIdentifier)
+        tableView.register(ActionCell.self, forCellReuseIdentifier: actionCellIdentifier)
         title = "Settings"
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         /*
@@ -48,40 +57,76 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return numberOfSettingsSections
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == actionSettingsSection {
+            return "Actions"
+        } else {
+            return nil
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SettingsOption.allCases.count
+        if section == commonSettingsSection {
+            return SettingsOption.allCases.count
+        } else if section == actionSettingsSection {
+            return PlayerAction.allCases.count
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cellOption = SettingsOption(rawValue: indexPath.row) else {
+        if indexPath.section == commonSettingsSection {
+            return getCommonCell(forRowAt: indexPath)
+        } else if indexPath.section == actionSettingsSection {
+            return getActionCell(forRowAt: indexPath)
+        } else {
+            // Falling back
             return UITableViewCell()
         }
-        let cell: UITableViewCell
-        switch cellOption {
-        case .fieldOfView:
-            guard let fovCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
-                                                              for: indexPath) as? InputTextCell else {
-                return UITableViewCell()
-            }
-            fovCell.delegate = self
-            fovCell.setTextCaptionLabel(to: cellOption.description)
-            fovCell.setTextField(to: "\(fieldOfView)")
-            cell = fovCell
-        case .space:
-            guard let spaceCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
-                                                                for: indexPath) as? InputTextCell else {
-                return UITableViewCell()
-            }
-            spaceCell.delegate = self
-            spaceCell.setTextCaptionLabel(to: cellOption.description)
-            spaceCell.setTextField(to: "\(space)")
-            cell = spaceCell
+    }
+
+    func getCommonCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let settingsOption = SettingsOption(rawValue: indexPath.row),
+              let commonCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
+                                                                  for: indexPath) as? InputTextCell
+        else {
+            return UITableViewCell()
         }
-        cell.tag = indexPath.row
-        return cell
+        switch settingsOption {
+        case .fieldOfView:
+            commonCell.setTextField(to: "\(fieldOfView)")
+        case .space:
+            commonCell.setTextField(to: "\(space)")
+        }
+        commonCell.delegate = self
+        commonCell.setTextCaptionLabel(to: settingsOption.description)
+        commonCell.tag = indexPath.row
+        return commonCell
+    }
+
+    func getActionCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let playerAction = PlayerAction(rawValue: indexPath.row),
+              let actionCell = tableView.dequeueReusableCell(withIdentifier: actionCellIdentifier,
+                                                                  for: indexPath) as? ActionCell
+        else {
+            return UITableViewCell()
+        }
+//        actionCell.textLabel?.text = playerAction.description + " " + playerGestureDescription
+        actionCell.actionLabel.text = playerAction.description
+        let playerGestureDescription = actionSettings[playerAction]?.description ?? "None"
+        actionCell.gestureLabel.text = playerGestureDescription
+//        switch playerAction {
+//        case .closeVC:
+//            actionCell.textLabel?.text = playerAction.description
+//        case .play:
+//            
+//        }
+        actionCell.tag = indexPath.row
+        return actionCell
     }
 
     // MARK: - Methods
