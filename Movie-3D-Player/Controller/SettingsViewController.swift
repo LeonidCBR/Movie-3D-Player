@@ -17,11 +17,14 @@ class SettingsViewController: UITableViewController {
     var space = SettingsProperties.Space.defaultValue
     let inputTextCellIdentifier = "InputTextCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
-
-
-    // TODO: Testing
-    let actionSettings: [PlayerAction: PlayerGesture] = [.closeVC: .swipeDown,
-                                                         .play: .singleTap]
+    // TODO: Implement mutable action settings
+    let actionSettings: [PlayerAction: PlayerGesture] = [.play: .singleTap,
+                                                         .resetScenePosition: .singleTwoFingersTap,
+                                                         .increaseFOV: .swipeUp,
+                                                         .decreaseFOV: .swipeDown,
+                                                         .rewindBackward: .swipeLeft,
+                                                         .rewindForward: .swipeRight,
+                                                         .closeVC: .swipeDownTwoFingers]
 
     // MARK: - Lifecycle
 
@@ -115,16 +118,9 @@ class SettingsViewController: UITableViewController {
         else {
             return UITableViewCell()
         }
-//        actionCell.textLabel?.text = playerAction.description + " " + playerGestureDescription
         actionCell.actionLabel.text = playerAction.description
         let playerGestureDescription = actionSettings[playerAction]?.description ?? "None"
         actionCell.gestureLabel.text = playerGestureDescription
-//        switch playerAction {
-//        case .closeVC:
-//            actionCell.textLabel?.text = playerAction.description
-//        case .play:
-//            
-//        }
         actionCell.tag = indexPath.row
         return actionCell
     }
