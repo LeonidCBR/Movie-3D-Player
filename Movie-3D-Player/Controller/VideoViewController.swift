@@ -16,6 +16,7 @@ class VideoViewController: UIViewController {
 
     // MARK: - Properties
     // TODO: - Consider to use ViewModel
+    let settingsProvider: SettingsProvider
 
 //    let fieldOfView = SettingsProperties.FieldOfView.defaultValue
 
@@ -101,8 +102,9 @@ class VideoViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(with video: Document) {
+    init(with video: Document, settingsProvider: SettingsProvider = SettingsProvider()) {
         self.videoFile = video
+        self.settingsProvider = settingsProvider
         let videoItem = AVPlayerItem(url: video.fileURL)
         self.videoPlayer = AVPlayer(playerItem: videoItem)
         self.motionManager = CMMotionManager()
@@ -275,16 +277,95 @@ class VideoViewController: UIViewController {
         videoPlayer.seek(to: newTime)
     }
 
-    /**
-     Play/pause                 - single tap
-     Init position of the scene - single tap by two fingers
-     Increase value of FOV      - swipe up
-     Decrease value of FOV      - swipe down
-     Rewind backward            - swipe left
-     Rewind forward             - swipe right
-     Dismiss video controller   - swipe down by two fingers
-     */
     func configureGestures() {
+        // TODO: Should be refactored
+        let actionSettings = settingsProvider.actionSettings
+        let actions: [PlayerAction: Selector] = [.closeVC: #selector(handleDismiss(_:)),
+                                                 .play: #selector(handlePlay(_:)),
+                                                 .resetScenePosition: #selector(handleInitScenePosition(_:)),
+                                                 .increaseFOV: #selector(handleIncreaseFOV(_:)),
+                                                 .decreaseFOV: #selector(handleDecreaseFOV(_:)),
+                                                 .rewindBackward: #selector(handleRewindBackward(_:)),
+                                                 .rewindForward: #selector(handleRewindForward(_:))]
+        let gestures: [PlayerGesture: (Selector) -> UIGestureRecognizer] = [
+            .singleTap: getSingleTapGesture,
+            .singleTapTwoFingers: getSingleTapTwoFingers,
+            .swipeUp: getSwipeUp,
+            .swipeDown: getSwipeDown,
+            .swipeLeft: getSwipeLeft,
+            .swipeRight: getSwipeRight,
+            .swipeUpTwoFingers: getSwipeUpTwoFingers,
+            .swipeDownTwoFingers: getSwipeDownTwoFingers]
+        // Prepare gesture recognizers and register it.
+        for (key, value) in actionSettings {
+            // key -> .play
+            // value -> .singleTwoFingersTap,
+            print("DEBUG: \(key) -> \(value)")
+            if let selector = actions[key],
+               let gesture = gestures[value]?(selector) {
+                print("DEBUG: Add gesture to the view")
+                view.addGestureRecognizer(gesture)
+            }
+        }
+    }
+
+    func getSingleTapGesture(_ selector: Selector) -> UIGestureRecognizer {
+        let singleTap = UITapGestureRecognizer(target: self, action: selector)
+        singleTap.numberOfTapsRequired = 1
+        singleTap.numberOfTouchesRequired = 1
+        return singleTap
+    }
+
+    func getSingleTapTwoFingers(_ selector: Selector) -> UIGestureRecognizer {
+        let singleTapTwoFingers = UITapGestureRecognizer(target: self, action: selector)
+        singleTapTwoFingers.numberOfTapsRequired = 1
+        singleTapTwoFingers.numberOfTouchesRequired = 2
+        return singleTapTwoFingers
+    }
+
+    func getSwipeUp(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeUp.direction = .up
+        swipeUp.numberOfTouchesRequired = 1
+        return swipeUp
+    }
+
+    func getSwipeDown(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeDown.direction = .down
+        swipeDown.numberOfTouchesRequired = 1
+        return swipeDown
+    }
+
+    func getSwipeLeft(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeLeft.direction = .left
+        swipeLeft.numberOfTouchesRequired = 1
+        return swipeLeft
+    }
+
+    func getSwipeRight(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeRight.direction = .right
+        swipeRight.numberOfTouchesRequired = 1
+        return swipeRight
+    }
+
+    func getSwipeUpTwoFingers(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeUpTwoFingers = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeUpTwoFingers.direction = .down
+        swipeUpTwoFingers.numberOfTouchesRequired = 2
+        return swipeUpTwoFingers
+    }
+
+    func getSwipeDownTwoFingers(_ selector: Selector) -> UIGestureRecognizer {
+        let swipeDownTwoFingers = UISwipeGestureRecognizer(target: self, action: selector)
+        swipeDownTwoFingers.direction = .down
+        swipeDownTwoFingers.numberOfTouchesRequired = 2
+        return swipeDownTwoFingers
+    }
+/*
+    func configureGesturesBAK() {
         let singleTap = UITapGestureRecognizer(target: self,
                                                action: #selector(handlePlay(_:)))
         singleTap.numberOfTapsRequired = 1
@@ -327,11 +408,12 @@ class VideoViewController: UIViewController {
         swipeDownTwoFingers.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeDownTwoFingers)
     }
-
+*/
     // MARK: - Selectors
 
     /** Play/pause */
     @objc func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             isPlaying.toggle()
@@ -340,6 +422,7 @@ class VideoViewController: UIViewController {
 
     /** Init view of the scene by rotating the sphere according the camera's view */
     @objc func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             initScenePosition()
@@ -348,6 +431,7 @@ class VideoViewController: UIViewController {
 
     /** Increase value of FOV */
     @objc func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             if let leftCamera = cameraNodeLeft.camera,
@@ -363,6 +447,7 @@ class VideoViewController: UIViewController {
 
     /** Decrease value of FOV */
     @objc func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             if let leftCamera = cameraNodeLeft.camera,
@@ -378,6 +463,7 @@ class VideoViewController: UIViewController {
 
     /** Rewind backward */
     @objc func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             seekBackward(by: 20)
@@ -386,6 +472,7 @@ class VideoViewController: UIViewController {
 
     /** Rewind forward */
     @objc func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             seekForward(by: 20)
@@ -394,6 +481,7 @@ class VideoViewController: UIViewController {
 
     /** Dismiss controller */
     @objc func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
+        print("DEBUG: \(#function)")
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
             dismiss(animated: true)

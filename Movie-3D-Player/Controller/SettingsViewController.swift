@@ -17,16 +17,27 @@ class SettingsViewController: UITableViewController {
     var space = SettingsProperties.Space.defaultValue
     let inputTextCellIdentifier = "InputTextCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
+    let settingsProvider: SettingsProvider
     // TODO: Implement mutable action settings
-    let actionSettings: [PlayerAction: PlayerGesture] = [.play: .singleTap,
-                                                         .resetScenePosition: .singleTwoFingersTap,
-                                                         .increaseFOV: .swipeUp,
-                                                         .decreaseFOV: .swipeDown,
-                                                         .rewindBackward: .swipeLeft,
-                                                         .rewindForward: .swipeRight,
-                                                         .closeVC: .swipeDownTwoFingers]
+    var actionSettings: [PlayerAction: PlayerGesture] = [:]
+//    let actionSettings: [PlayerAction: PlayerGesture] = [.play: .singleTap,
+//                                                         .resetScenePosition: .singleTwoFingersTap,
+//                                                         .increaseFOV: .swipeUp,
+//                                                         .decreaseFOV: .swipeDown,
+//                                                         .rewindBackward: .swipeLeft,
+//                                                         .rewindForward: .swipeRight,
+//                                                         .closeVC: .swipeDownTwoFingers]
 
     // MARK: - Lifecycle
+
+    init(settingsProvider: SettingsProvider = SettingsProvider()) {
+        self.settingsProvider = settingsProvider
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        return nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +58,7 @@ class SettingsViewController: UITableViewController {
 
     /// Load settings from DB and update model if values exists
     func loadSettings() {
+        // TODO: Consider to use settings provider
         if let fieldOfView = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.id),
            let value = (fieldOfView as? CGFloat) {
             self.fieldOfView = value
@@ -55,6 +67,7 @@ class SettingsViewController: UITableViewController {
         let value = (space as? CGFloat) {
             self.space = value
         }
+        actionSettings = settingsProvider.actionSettings
     }
 
     // MARK: - Table view data source

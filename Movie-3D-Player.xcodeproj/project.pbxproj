@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF32B2702A90039C1A7 /* SceneProperties.swift */; };
 		B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF52B2850210039C1A7 /* SettingsProperties.swift */; };
+		B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BB6B02B2FED330053E445 /* SettingsProvider.swift */; };
 		B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */; };
 		B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */; };
 		B8F1DE1C2B2AAC7300E134D3 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		B8500EF32B2702A90039C1A7 /* SceneProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProperties.swift; sourceTree = "<group>"; };
 		B8500EF52B2850210039C1A7 /* SettingsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProperties.swift; sourceTree = "<group>"; };
+		B89BB6B02B2FED330053E445 /* SettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProvider.swift; sourceTree = "<group>"; };
 		B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
 		B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGesture.swift; sourceTree = "<group>"; };
 		B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				B8500EF52B2850210039C1A7 /* SettingsProperties.swift */,
 				B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */,
 				B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */,
+				B89BB6B02B2FED330053E445 /* SettingsProvider.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */,
+				B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */,
 				D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */,
 				B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */,
 				D7CF882726EED340004D433F /* Document.swift in Sources */,
