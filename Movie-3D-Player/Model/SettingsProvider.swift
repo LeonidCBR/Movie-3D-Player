@@ -8,37 +8,69 @@
 import Foundation
 
 final class SettingsProvider {
+    var fieldOfView: CGFloat {
+        get {
+            return getFieldOfView()
+        }
+        set {
+            setFieldOfView(to: newValue)
+        }
+    }
+
+    var space: CGFloat {
+        get {
+            return getSpace()
+        }
+        set {
+            setSpace(to: newValue)
+        }
+    }
+
     var actionSettings: [PlayerAction: PlayerGesture] {
         get {
             return getActionSettings()
         }
         set {
-            saveActionSettings(newValue)
+            setActionSettings(to: newValue)
         }
     }
 
-    /** Default settings
-     Play/pause                 - single tap by two fingers
-     Init position of the scene - single tap
-     Increase value of FOV      - swipe up by two fingers
-     Decrease value of FOV      - swipe down by two fingers
-     Rewind backward            - swipe left
-     Rewind forward             - swipe right
-     Dismiss video controller   - swipe down
-     */
-    func getActionSettings() -> [PlayerAction: PlayerGesture] {
-        // TODO: Implement fetching from UserDefaults
-        return [.play: .singleTapTwoFingers,
-                .resetScenePosition: .singleTap,
-                .increaseFOV: .swipeUpTwoFingers,
-                .decreaseFOV: .swipeDownTwoFingers,
-                .rewindBackward: .swipeLeft,
-                .rewindForward: .swipeRight,
-                .closeVC: .swipeDown]
+    func getFieldOfView() -> CGFloat {
+        if let fieldOfViewObject = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.key),
+           let fieldOfViewValue = (fieldOfViewObject as? CGFloat) {
+            return fieldOfViewValue
+        } else {
+            return SettingsProperties.FieldOfView.defaultValue
+        }
     }
 
-    func saveActionSettings(_ actionSettings: [PlayerAction: PlayerGesture]) {
-        // TODO: Implement saving to UserDefaults
-        print("DEBUG: Implement saving to UserDefaults")
+    func setFieldOfView(to fieldOfView: CGFloat) {
+        UserDefaults.standard.set(fieldOfView, forKey: SettingsProperties.FieldOfView.key)
+    }
+
+    func getSpace() -> CGFloat {
+        if let spaceObject = UserDefaults.standard.object(forKey: SettingsProperties.Space.key),
+        let spaceValue = (spaceObject as? CGFloat) {
+            return spaceValue
+        } else {
+            return SettingsProperties.Space.defaultValue
+        }
+    }
+
+    func setSpace(to space: CGFloat) {
+        UserDefaults.standard.set(space, forKey: SettingsProperties.Space.key)
+    }
+
+    func getActionSettings() -> [PlayerAction: PlayerGesture] {
+        if let actionSettings = UserDefaults.standard.object(forKey: SettingsProperties.actionSettingsKey)
+            as? [PlayerAction: PlayerGesture] {
+            return actionSettings
+        } else {
+            return SettingsProperties.defaultActionSettings
+        }
+    }
+
+    func setActionSettings(to actionSettings: [PlayerAction: PlayerGesture]) {
+        UserDefaults.standard.setValue(actionSettings, forKey: SettingsProperties.actionSettingsKey)
     }
 }

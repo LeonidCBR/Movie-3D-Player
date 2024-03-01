@@ -8,25 +8,14 @@
 import UIKit
 
 class SettingsViewController: UITableViewController {
+    // TODO: Consider to move into the SettingsProvider
     let numberOfSettingsSections = 2
     let commonSettingsSection = 0
     let actionSettingsSection = 1
-    // TODO: Consider to create SettingsProvider
-    var fieldOfView = SettingsProperties.FieldOfView.defaultValue
-    // The space between left and right views
-    var space = SettingsProperties.Space.defaultValue
+
     let inputTextCellIdentifier = "InputTextCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let settingsProvider: SettingsProvider
-    // TODO: Implement mutable action settings
-    var actionSettings: [PlayerAction: PlayerGesture] = [:]
-//    let actionSettings: [PlayerAction: PlayerGesture] = [.play: .singleTap,
-//                                                         .resetScenePosition: .singleTwoFingersTap,
-//                                                         .increaseFOV: .swipeUp,
-//                                                         .decreaseFOV: .swipeDown,
-//                                                         .rewindBackward: .swipeLeft,
-//                                                         .rewindForward: .swipeRight,
-//                                                         .closeVC: .swipeDownTwoFingers]
 
     // MARK: - Lifecycle
 
@@ -53,21 +42,6 @@ class SettingsViewController: UITableViewController {
          */
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-        loadSettings()
-    }
-
-    /// Load settings from DB and update model if values exists
-    func loadSettings() {
-        // TODO: Consider to use settings provider
-        if let fieldOfView = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.id),
-           let value = (fieldOfView as? CGFloat) {
-            self.fieldOfView = value
-        }
-        if let space = UserDefaults.standard.object(forKey: SettingsProperties.Space.id),
-        let value = (space as? CGFloat) {
-            self.space = value
-        }
-        actionSettings = settingsProvider.actionSettings
     }
 
     // MARK: - Table view data source
@@ -105,6 +79,15 @@ class SettingsViewController: UITableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == actionSettingsSection else {
+            return
+        }
+        let gesturePickerVC = UIViewController()
+        gesturePickerVC.view.backgroundColor = .blue
+        present(gesturePickerVC, animated: true)
+    }
+
     func getCommonCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let settingsOption = SettingsOption(rawValue: indexPath.row),
               let commonCell = tableView.dequeueReusableCell(withIdentifier: inputTextCellIdentifier,
@@ -114,9 +97,9 @@ class SettingsViewController: UITableViewController {
         }
         switch settingsOption {
         case .fieldOfView:
-            commonCell.setTextField(to: "\(fieldOfView)")
+            commonCell.setTextField(to: "\(settingsProvider.fieldOfView)")
         case .space:
-            commonCell.setTextField(to: "\(space)")
+            commonCell.setTextField(to: "\(settingsProvider.space)")
         }
         commonCell.delegate = self
         commonCell.setTextCaptionLabel(to: settingsOption.description)
@@ -132,7 +115,7 @@ class SettingsViewController: UITableViewController {
             return UITableViewCell()
         }
         actionCell.actionLabel.text = playerAction.description
-        let playerGestureDescription = actionSettings[playerAction]?.description ?? "None"
+        let playerGestureDescription = settingsProvider.actionSettings[playerAction]?.description ?? "None"
         actionCell.gestureLabel.text = playerGestureDescription
         actionCell.tag = indexPath.row
         return actionCell
@@ -164,38 +147,36 @@ extension SettingsViewController: InputTextCellDelegate {
             return
         }
         guard let text = textField.text,
-        let value = Double(text) else {
+        let newValue = Double(text) else {
             // New value is incorrect. Set an old value
             switch option {
             case .fieldOfView:
-                setFieldOfView(to: fieldOfView)
+                setFieldOfView(to: settingsProvider.fieldOfView)
             case .space:
-                setSpace(to: space)
+                setSpace(to: settingsProvider.space)
             }
             return
         }
         switch option {
         case .fieldOfView:
-            if value != fieldOfView {
-                guard value < SettingsProperties.FieldOfView.maxThreshold,
-                      value > SettingsProperties.FieldOfView.minThreshold else {
+            if newValue != settingsProvider.fieldOfView {
+                guard newValue < SettingsProperties.FieldOfView.maxThreshold,
+                      newValue > SettingsProperties.FieldOfView.minThreshold else {
                     // Reset to the old value
-                    setFieldOfView(to: fieldOfView)
+                    setFieldOfView(to: settingsProvider.fieldOfView)
                     return
                 }
-                fieldOfView = value
-                UserDefaults.standard.set(value, forKey: SettingsProperties.FieldOfView.id)
+                settingsProvider.fieldOfView = newValue
             }
         case .space:
-            if value != space {
-                guard value < SettingsProperties.Space.maxThreshold,
-                      value > SettingsProperties.Space.minThreshold else {
+            if newValue != settingsProvider.space {
+                guard newValue < SettingsProperties.Space.maxThreshold,
+                      newValue > SettingsProperties.Space.minThreshold else {
                     // Reset to the old value
-                    setSpace(to: space)
+                    setSpace(to: settingsProvider.space)
                     return
                 }
-                space = value
-                UserDefaults.standard.set(value, forKey: SettingsProperties.Space.id)
+                settingsProvider.space = newValue
             }
         }
     }

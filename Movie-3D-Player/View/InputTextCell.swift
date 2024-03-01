@@ -64,7 +64,6 @@ class InputTextCell: UITableViewCell {
             textField.widthAnchor.constraint(equalToConstant: 100.0),
             textField.heightAnchor.constraint(equalToConstant: 34.0),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15.0),
-            // TODO: - Test it
             textField.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 20.0),
             textField.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -20.0),
             captionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

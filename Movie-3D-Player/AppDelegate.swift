@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let videoURL = baseDir.appendingPathComponent(videoDirName)
             if !FileManager.default.fileExists(atPath: videoURL.path) {
                 do {
-                    print("DEBUG: Creating video directory...")
                     try FileManager.default.createDirectory(at: videoURL, withIntermediateDirectories: false, attributes: nil)
                     // TODO: Look at => attributes: [FileAttributeKey : Any]?)
                 } catch {

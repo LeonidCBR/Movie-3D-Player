@@ -47,12 +47,8 @@ class ActionCell: UITableViewCell {
     func configureUI() {
         selectionStyle = .none
         clipsToBounds = true
-//        textField.delegate = self
-//        contentView.addSubview(actionLabel)
-//        contentView.addSubview(gestureLabel)
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
         gestureLabel.translatesAutoresizingMaskIntoConstraints = false
-
         let stackView = UIStackView(arrangedSubviews: [actionLabel, gestureLabel])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually

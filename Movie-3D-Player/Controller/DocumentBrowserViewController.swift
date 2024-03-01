@@ -27,7 +27,6 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                          didRequestDocumentCreationWithHandler importHandler:
                          @escaping (URL?, UIDocumentBrowserViewController.ImportMode) -> Void) {
         let newDocumentURL: URL? = nil
-        // TODO: Should we use it
         // Set the URL for the new document here.
         // Optionally, you can present a template chooser before calling the importHandler.
         // Make sure the importHandler is always called, even if the user cancels the creation request.
@@ -62,14 +61,20 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         let document = Document(fileURL: videoURL)
         let videoViewController = VideoViewController(with: document)
         videoViewController.modalPresentationStyle = .fullScreen
-        present(videoViewController, animated: true, completion: nil)
+        present(videoViewController, animated: true)
     }
 
     // MARK: - Selectors
 
     @objc func settingsButtonTapped() {
         let settingsViewController = SettingsViewController()
+        let closeAction = UIAction { _ in
+            self.dismiss(animated: true)
+        }
+        settingsViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close,
+                                                                                  primaryAction: closeAction)
         let navigationController = UINavigationController(rootViewController: settingsViewController)
-        present(navigationController, animated: true, completion: nil)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true)
     }
 }

@@ -12,7 +12,6 @@ struct SceneProperties {
     static let right = "SceneKit Asset Catalog.scnassets/DomeZR.dae"
     static let camera = "Camera"
     static let sphere = "Sphere"
-    // TODO: Should we get these parameters from the video?
-    static let width = 3840
-    static let height = 1920
+    static let defaultWidth = 3840
+    static let defaultHeight = 1920
 }
