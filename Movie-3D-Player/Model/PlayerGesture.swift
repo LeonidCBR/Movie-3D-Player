@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PlayerGesture: Int, CustomStringConvertible {
+enum PlayerGesture: Int, CustomStringConvertible, CaseIterable {
     case singleTap = 0
     case singleTapTwoFingers
     case swipeUp

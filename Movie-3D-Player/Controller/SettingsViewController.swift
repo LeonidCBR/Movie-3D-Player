@@ -8,6 +8,7 @@
 import UIKit
 
 class SettingsViewController: UITableViewController {
+
     // TODO: Consider to move into the SettingsProvider
     let numberOfSettingsSections = 2
     let commonSettingsSection = 0
@@ -79,13 +80,18 @@ class SettingsViewController: UITableViewController {
         }
     }
 
+    // MARK: Picking a gesture
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == actionSettingsSection else {
             return
         }
-        let gesturePickerVC = UIViewController()
-        gesturePickerVC.view.backgroundColor = .blue
-        present(gesturePickerVC, animated: true)
+        let gesturePickerVC = GesturePickerViewController()
+        gesturePickerVC.delegate = self
+        if let playerAction = PlayerAction(rawValue: indexPath.row),
+           let playerGesture = settingsProvider.actionSettings[playerAction] {
+            gesturePickerVC.selectedGesture = playerGesture
+        }
+        navigationController?.pushViewController(gesturePickerVC, animated: true)
     }
 
     func getCommonCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -180,4 +186,13 @@ extension SettingsViewController: InputTextCellDelegate {
             }
         }
     }
+}
+
+extension SettingsViewController: GesturePickerViewControllerDelegate {
+
+    func didSelectGesture(_ playerGesture: PlayerGesture) {
+        // TODO: Implement saving new gesture and reset gesture from another action if it was
+        print("DEBUG: Implement saving the gesture: \(playerGesture.description)")
+    }
+
 }
