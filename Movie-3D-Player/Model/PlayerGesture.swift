@@ -29,4 +29,5 @@ enum PlayerGesture: Int, CustomStringConvertible, CaseIterable {
         case .swipeDownTwoFingers: return "Swipe down by two fingers"
         }
     }
+
 }

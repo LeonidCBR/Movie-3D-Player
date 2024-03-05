@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PlayerAction: Int, CaseIterable, CustomStringConvertible {
+enum PlayerAction: Int, CaseIterable, CustomStringConvertible, CodingKey {
     case closeVC = 0
     case play
     case resetScenePosition
@@ -27,4 +27,5 @@ enum PlayerAction: Int, CaseIterable, CustomStringConvertible {
         case .rewindForward: return "Rewind forward"
         }
     }
+
 }

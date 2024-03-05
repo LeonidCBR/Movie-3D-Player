@@ -90,6 +90,7 @@ class SettingsViewController: UITableViewController {
         if let playerAction = PlayerAction(rawValue: indexPath.row),
            let playerGesture = settingsProvider.actionSettings[playerAction] {
             gesturePickerVC.selectedGesture = playerGesture
+            gesturePickerVC.playerAction = playerAction
         }
         navigationController?.pushViewController(gesturePickerVC, animated: true)
     }
@@ -190,9 +191,14 @@ extension SettingsViewController: InputTextCellDelegate {
 
 extension SettingsViewController: GesturePickerViewControllerDelegate {
 
-    func didSelectGesture(_ playerGesture: PlayerGesture) {
-        // TODO: Implement saving new gesture and reset gesture from another action if it was
-        print("DEBUG: Implement saving the gesture: \(playerGesture.description)")
+    func didSelectGesture(_ playerGesture: PlayerGesture, for action: PlayerAction) {
+        // TODO: Reset gesture from another action if it was
+
+        // Save the settings
+        settingsProvider.actionSettings[action] = playerGesture
+        // Reload the appropriate rows
+        let indexPath = IndexPath(row: action.rawValue, section: actionSettingsSection)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
 }

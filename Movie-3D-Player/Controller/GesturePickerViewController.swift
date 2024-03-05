@@ -8,13 +8,14 @@
 import UIKit
 
 protocol GesturePickerViewControllerDelegate: AnyObject {
-    func didSelectGesture(_ playerGesture: PlayerGesture)
+    func didSelectGesture(_ playerGesture: PlayerGesture, for action: PlayerAction)
 }
 
 class GesturePickerViewController: UITableViewController {
 
     let gestureCellIdentifier = "GestureCellIdentifier"
     var selectedGesture: PlayerGesture?
+    var playerAction: PlayerAction?
     weak var delegate: GesturePickerViewControllerDelegate?
 
     override func viewDidLoad() {
@@ -48,8 +49,10 @@ class GesturePickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0, let playerGesture = PlayerGesture(rawValue: indexPath.row) {
-            delegate?.didSelectGesture(playerGesture)
+        if indexPath.section == 0,
+           let playerGesture = PlayerGesture(rawValue: indexPath.row),
+           let playerAction = playerAction {
+            delegate?.didSelectGesture(playerGesture, for: playerAction)
         }
         navigationController?.popViewController(animated: true)
     }

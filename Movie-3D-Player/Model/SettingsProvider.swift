@@ -62,8 +62,14 @@ final class SettingsProvider {
     }
 
     func getActionSettings() -> [PlayerAction: PlayerGesture] {
-        if let actionSettings = UserDefaults.standard.object(forKey: SettingsProperties.actionSettingsKey)
-            as? [PlayerAction: PlayerGesture] {
+        if let encodedSettings = UserDefaults.standard.object(forKey: SettingsProperties.actionSettingsKey)
+            as? [String: Int] {
+            var actionSettings: [PlayerAction: PlayerGesture] = [:]
+            for (key, value) in encodedSettings {
+                if let action = PlayerAction(stringValue: key) {
+                    actionSettings[action] = PlayerGesture(rawValue: value)
+                }
+            }
             return actionSettings
         } else {
             return SettingsProperties.defaultActionSettings
@@ -71,6 +77,10 @@ final class SettingsProvider {
     }
 
     func setActionSettings(to actionSettings: [PlayerAction: PlayerGesture]) {
-        UserDefaults.standard.setValue(actionSettings, forKey: SettingsProperties.actionSettingsKey)
+        var encodedSettings: [String: Int] = [:]
+        for (action, gesture) in actionSettings {
+            encodedSettings[action.stringValue] = gesture.rawValue
+        }
+        UserDefaults.standard.setValue(encodedSettings, forKey: SettingsProperties.actionSettingsKey)
     }
 }
