@@ -189,6 +189,8 @@ extension SettingsViewController: InputTextCellDelegate {
     }
 }
 
+// MARK: - GesturePickerViewControllerDelegate
+
 extension SettingsViewController: GesturePickerViewControllerDelegate {
 
     func didSelectGesture(_ playerGesture: PlayerGesture, for action: PlayerAction) {
