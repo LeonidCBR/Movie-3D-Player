@@ -8,7 +8,8 @@
 import Foundation
 
 enum PlayerGesture: Int, CustomStringConvertible, CaseIterable {
-    case singleTap = 0
+    case none = 0
+    case singleTap
     case singleTapTwoFingers
     case swipeUp
     case swipeDown
@@ -19,6 +20,7 @@ enum PlayerGesture: Int, CustomStringConvertible, CaseIterable {
 
     var description: String {
         switch self {
+        case .none: return "None"
         case .singleTap: return "Single tap"
         case .singleTapTwoFingers: return "Single tap by two fingers"
         case .swipeUp: return "Swipe up"

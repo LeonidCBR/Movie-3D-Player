@@ -192,13 +192,21 @@ extension SettingsViewController: InputTextCellDelegate {
 extension SettingsViewController: GesturePickerViewControllerDelegate {
 
     func didSelectGesture(_ playerGesture: PlayerGesture, for action: PlayerAction) {
-        // TODO: Reset gesture from another action if it was
-
+        // Reset the same gesture from another action if it was
+        var newActionSettings = settingsProvider.actionSettings
+        if playerGesture != .none {
+            for (action, gesture) in newActionSettings where gesture == playerGesture {
+                    newActionSettings[action] = PlayerGesture.none
+            }
+        }
+        newActionSettings[action] = playerGesture
         // Save the settings
-        settingsProvider.actionSettings[action] = playerGesture
+//        settingsProvider.actionSettings[action] = playerGesture
+        settingsProvider.actionSettings = newActionSettings
         // Reload the appropriate rows
-        let indexPath = IndexPath(row: action.rawValue, section: actionSettingsSection)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+//        let indexPath = IndexPath(row: action.rawValue, section: actionSettingsSection)
+//        tableView.reloadRows(at: [indexPath], with: .automatic)
+        tableView.reloadData()
     }
 
 }
