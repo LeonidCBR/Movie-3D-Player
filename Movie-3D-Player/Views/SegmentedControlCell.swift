@@ -12,8 +12,13 @@ class SegmentedControlCell: UITableViewCell {
     // MARK: - Properties
 
     let segmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Left", "Right"])
-        control.selectedSegmentIndex = 0
+        let orientationLabels = DeviceOrientation.allCases.map { $0.description }
+        let control = UISegmentedControl(items: orientationLabels)
+
+        
+        // TODO: Add target action for the controll in order to save the selected orientation
+        
+        
         return control
     }()
 
@@ -40,6 +45,10 @@ class SegmentedControlCell: UITableViewCell {
             segmentedControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20.0),
             segmentedControl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
+    }
+
+    func setDeviceOrientation(to orientation: DeviceOrientation) {
+        segmentedControl.selectedSegmentIndex = orientation.rawValue
     }
 
 }

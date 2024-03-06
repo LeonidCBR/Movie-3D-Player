@@ -145,8 +145,7 @@ class SettingsViewController: UITableViewController {
             for: indexPath) as? SegmentedControlCell else {
             return UITableViewCell()
         }
-        // TODO: configure
-        // ...
+        segmentedControlCell.setDeviceOrientation(to: settingsProvider.orientation)
         return segmentedControlCell
     }
 

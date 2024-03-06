@@ -8,6 +8,11 @@
 import Foundation
 
 final class SettingsProvider {
+
+    // MARK: - Properties
+
+    let userDefaults: UserDefaults
+
     var fieldOfView: CGFloat {
         get {
             return getFieldOfView()
@@ -26,6 +31,15 @@ final class SettingsProvider {
         }
     }
 
+    var orientation: DeviceOrientation {
+        get {
+            return getDeviceOrientation()
+        }
+        set {
+            setDeviceOrientation(to: newValue)
+        }
+    }
+
     var actionSettings: [PlayerAction: PlayerGesture] {
         get {
             return getActionSettings()
@@ -35,8 +49,14 @@ final class SettingsProvider {
         }
     }
 
+    init(userDefaults: UserDefaults = UserDefaults.standard) {
+        self.userDefaults = userDefaults
+    }
+
+    // MARK: - Methods
+
     func getFieldOfView() -> CGFloat {
-        if let fieldOfViewObject = UserDefaults.standard.object(forKey: SettingsProperties.FieldOfView.key),
+        if let fieldOfViewObject = userDefaults.object(forKey: SettingsProperties.FieldOfView.key),
            let fieldOfViewValue = (fieldOfViewObject as? CGFloat) {
             return fieldOfViewValue
         } else {
@@ -45,11 +65,11 @@ final class SettingsProvider {
     }
 
     func setFieldOfView(to fieldOfView: CGFloat) {
-        UserDefaults.standard.set(fieldOfView, forKey: SettingsProperties.FieldOfView.key)
+        userDefaults.set(fieldOfView, forKey: SettingsProperties.FieldOfView.key)
     }
 
     func getSpace() -> CGFloat {
-        if let spaceObject = UserDefaults.standard.object(forKey: SettingsProperties.Space.key),
+        if let spaceObject = userDefaults.object(forKey: SettingsProperties.Space.key),
         let spaceValue = (spaceObject as? CGFloat) {
             return spaceValue
         } else {
@@ -58,11 +78,24 @@ final class SettingsProvider {
     }
 
     func setSpace(to space: CGFloat) {
-        UserDefaults.standard.set(space, forKey: SettingsProperties.Space.key)
+        userDefaults.set(space, forKey: SettingsProperties.Space.key)
+    }
+
+    func getDeviceOrientation() -> DeviceOrientation {
+        if let orientationRawValue = userDefaults.object(forKey: SettingsProperties.Orientation.key) as? Int,
+           let orientation = DeviceOrientation(rawValue: orientationRawValue) {
+            return orientation
+        } else {
+            return SettingsProperties.Orientation.defaultValue
+        }
+    }
+
+    func setDeviceOrientation(to orientation: DeviceOrientation) {
+        userDefaults.set(orientation.rawValue, forKey: SettingsProperties.Orientation.key)
     }
 
     func getActionSettings() -> [PlayerAction: PlayerGesture] {
-        if let encodedSettings = UserDefaults.standard.object(forKey: SettingsProperties.actionSettingsKey)
+        if let encodedSettings = userDefaults.object(forKey: SettingsProperties.actionSettingsKey)
             as? [String: Int] {
             var actionSettings: [PlayerAction: PlayerGesture] = [:]
             for (key, value) in encodedSettings {
@@ -81,6 +114,6 @@ final class SettingsProvider {
         for (action, gesture) in actionSettings {
             encodedSettings[action.stringValue] = gesture.rawValue
         }
-        UserDefaults.standard.setValue(encodedSettings, forKey: SettingsProperties.actionSettingsKey)
+        userDefaults.setValue(encodedSettings, forKey: SettingsProperties.actionSettingsKey)
     }
 }

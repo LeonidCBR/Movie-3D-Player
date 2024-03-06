@@ -24,6 +24,11 @@ struct SettingsProperties {
         static let minThreshold: CGFloat = 0
     }
 
+    struct Orientation {
+        static let key = "DeviceOrientation"
+        static let defaultValue: DeviceOrientation = .leftSideDown
+    }
+
     static let actionSettingsKey = "ActionSettingsKey"
 
     /** Default settings
