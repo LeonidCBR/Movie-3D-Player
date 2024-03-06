@@ -13,6 +13,7 @@
 		B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BB6B02B2FED330053E445 /* SettingsProvider.swift */; };
 		B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */; };
 		B8CE16922B9831B10072CD61 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */; };
+		B8CE16942B9863E50072CD61 /* RendererDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE16932B9863E50072CD61 /* RendererDelegate.swift */; };
 		B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */; };
 		B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */; };
 		B8F1DE1C2B2AAC7300E134D3 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */; };
@@ -36,6 +37,7 @@
 		B89BB6B02B2FED330053E445 /* SettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProvider.swift; sourceTree = "<group>"; };
 		B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
 		B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
+		B8CE16932B9863E50072CD61 /* RendererDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererDelegate.swift; sourceTree = "<group>"; };
 		B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
 		B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGesture.swift; sourceTree = "<group>"; };
 		B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */,
 				B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */,
 				B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */,
+				B8CE16932B9863E50072CD61 /* RendererDelegate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */,
+				B8CE16942B9863E50072CD61 /* RendererDelegate.swift in Sources */,
 				B8287A8A2B91904A002B8195 /* GesturePickerViewController.swift in Sources */,
 				B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */,
 				B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */,

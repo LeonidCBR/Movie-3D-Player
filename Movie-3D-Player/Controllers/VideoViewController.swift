@@ -13,59 +13,10 @@ import AVFoundation
 import MediaPlayer
 
 // swiftlint:disable type_body_length
-
-class RendererWithLeftOrientation: NSObject, SCNSceneRendererDelegate {
-    let motionManager: CMMotionManager
-    
-    init(motionManager: CMMotionManager) {
-        self.motionManager = motionManager
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        guard let deviceMotion = motionManager.deviceMotion,
-              let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
-        else {
-            return
-        }
-        let cmQuaternion = deviceMotion.attitude.quaternion
-        let scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
-                                          y: Float(cmQuaternion.x),
-                                          z: Float(cmQuaternion.z),
-                                          w: Float(cmQuaternion.w))
-        cameraNode.orientation = scnQuaternion
-    }
-
-}
-
-class RendererWithRightOrientation: NSObject, SCNSceneRendererDelegate {
-    let motionManager: CMMotionManager
-    
-    init(motionManager: CMMotionManager) {
-        self.motionManager = motionManager
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        guard let deviceMotion = motionManager.deviceMotion,
-              let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
-        else {
-            return
-        }
-        let cmQuaternion = deviceMotion.attitude.quaternion
-        let scnQuaternion = SCNQuaternion(x: Float(cmQuaternion.y),
-                                          y: Float(-cmQuaternion.x),
-                                          z: Float(cmQuaternion.z),
-                                          w: Float(cmQuaternion.w))
-        cameraNode.orientation = scnQuaternion
-    }
-}
-
 class VideoViewController: UIViewController {
 
     // MARK: - Properties
-    let rendererDelegate: SCNSceneRendererDelegate
-    
-//    var renderer: (SCNSceneRenderer, TimeInterval) -> Void = {_,_ in }
-
+    let rendererDelegate: RendererDelegate
     let settingsProvider: SettingsProvider
     let videoPlayer: AVPlayer
     let motionManager: CMMotionManager
@@ -140,12 +91,16 @@ class VideoViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(with video: Document, settingsProvider: SettingsProvider = SettingsProvider()) {
+    init(with video: Document,
+         settingsProvider: SettingsProvider,
+         motionManager: CMMotionManager,
+         rendererDelegate: RendererDelegate) {
         self.videoFile = video
-        self.settingsProvider = settingsProvider
         let videoItem = AVPlayerItem(url: video.fileURL)
         self.videoPlayer = AVPlayer(playerItem: videoItem)
-        self.motionManager = CMMotionManager()
+        self.settingsProvider = settingsProvider
+        self.motionManager = motionManager
+        self.rendererDelegate = rendererDelegate
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -171,7 +126,6 @@ class VideoViewController: UIViewController {
         view.backgroundColor = .black
         UIApplication.shared.isIdleTimerDisabled = true
         videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
-        configureOrientation()
         initScene()
         configureGestures()
         setupRemoteTransportControls()
@@ -216,15 +170,6 @@ class VideoViewController: UIViewController {
     }
 
     // MARK: - Methods
-    
-    func configureOrientation() {
-        switch settingsProvider.orientation {
-        case .leftSideDown:
-            renderer = rendererWithLeftOrientation //(_:updateAtTime:)
-        case .rightSideDown:
-            renderer = rendererWithRightOrientation //(_:updateAtTime:)
-        }
-    }
 
     func initScene() {
         let videoSKNode = SKVideoNode(avPlayer: videoPlayer)
@@ -249,8 +194,8 @@ class VideoViewController: UIViewController {
         sceneViewRight.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sceneViewLeft)
         view.addSubview(sceneViewRight)
-        sceneViewLeft.delegate = self
-        sceneViewRight.delegate = self
+        sceneViewLeft.delegate = rendererDelegate
+        sceneViewRight.delegate = rendererDelegate
     }
 
     func configureCameras() {
@@ -501,40 +446,4 @@ class VideoViewController: UIViewController {
     }
 
 }
-
-// MARK: - SCNSceneRendererDelegate
-/*
-//extension VideoViewController: SCNSceneRendererDelegate {
-
-    // Capture quaternion via motion manager 60 times per second
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        guard let deviceMotion = motionManager.deviceMotion,
-              let cameraNode = renderer.scene?.rootNode.childNode(withName: "Camera", recursively: false)
-        else {
-            return
-        }
-        let cmQuaternion = deviceMotion.attitude.quaternion
-        // TODO: Make a refactor
-//        let scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
-//                                          y: Float(cmQuaternion.x),
-//                                          z: Float(cmQuaternion.z),
-//                                          w: Float(cmQuaternion.w))
-        let scnQuaternion: SCNQuaternion
-        switch settingsProvider.orientation {
-        case .leftSideDown:
-            scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
-                                              y: Float(cmQuaternion.x),
-                                              z: Float(cmQuaternion.z),
-                                              w: Float(cmQuaternion.w))
-        case .rightSideDown:
-            scnQuaternion = SCNQuaternion(x: Float(cmQuaternion.y),
-                                              y: Float(-cmQuaternion.x),
-                                              z: Float(cmQuaternion.z),
-                                              w: Float(cmQuaternion.w))
-        }
-        cameraNode.orientation = scnQuaternion
-    }
-
-}
-*/
 // swiftlint:enable type_body_length

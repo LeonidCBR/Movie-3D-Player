@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreMotion
 
 class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocumentBrowserViewControllerDelegate {
 
@@ -59,7 +60,19 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     func presentVideo(at videoURL: URL) {
         let document = Document(fileURL: videoURL)
-        let videoViewController = VideoViewController(with: document)
+        let motionManager = CMMotionManager()
+        let settings = SettingsProvider()
+        let delegate: RendererDelegate
+        switch settings.orientation {
+        case .leftSideDown:
+            delegate = RendererWithLeftOrientation(motionManager: motionManager)
+        case .rightSideDown:
+            delegate = RendererWithRightOrientation(motionManager: motionManager)
+        }
+        let videoViewController = VideoViewController(with: document,
+                                                      settingsProvider: settings,
+                                                      motionManager: motionManager,
+                                                      rendererDelegate: delegate)
         videoViewController.modalPresentationStyle = .fullScreen
         present(videoViewController, animated: true)
     }
