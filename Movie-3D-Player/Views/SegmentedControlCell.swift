@@ -7,18 +7,19 @@
 
 import UIKit
 
+protocol SegmentedControlCellDelegate: AnyObject {
+    func orientationDidChange(to orientation: DeviceOrientation)
+}
+
 class SegmentedControlCell: UITableViewCell {
 
     // MARK: - Properties
 
-    let segmentedControl: UISegmentedControl = {
+    weak var delegate: SegmentedControlCellDelegate?
+
+    let orientationControl: UISegmentedControl = {
         let orientationLabels = DeviceOrientation.allCases.map { $0.description }
         let control = UISegmentedControl(items: orientationLabels)
-
-        
-        // TODO: Add target action for the controll in order to save the selected orientation
-        
-        
         return control
     }()
 
@@ -38,17 +39,27 @@ class SegmentedControlCell: UITableViewCell {
     func configureUI() {
         selectionStyle = .none
         clipsToBounds = true
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(segmentedControl)
+        orientationControl.addTarget(self,
+                                     action: #selector(handleOrientationValueChanged),
+                                     for: .valueChanged)
+        orientationControl.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(orientationControl)
         NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20.0),
-            segmentedControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20.0),
-            segmentedControl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            orientationControl.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20.0),
+            orientationControl.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20.0),
+            orientationControl.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ])
     }
 
     func setDeviceOrientation(to orientation: DeviceOrientation) {
-        segmentedControl.selectedSegmentIndex = orientation.rawValue
+        orientationControl.selectedSegmentIndex = orientation.rawValue
     }
 
+    // MARK: - Selectors
+
+    @objc func handleOrientationValueChanged() {
+        if let newOrientation = DeviceOrientation(rawValue: orientationControl.selectedSegmentIndex) {
+            delegate?.orientationDidChange(to: newOrientation)
+        }
+    }
 }

@@ -145,6 +145,7 @@ class SettingsViewController: UITableViewController {
             for: indexPath) as? SegmentedControlCell else {
             return UITableViewCell()
         }
+        segmentedControlCell.delegate = self
         segmentedControlCell.setDeviceOrientation(to: settingsProvider.orientation)
         return segmentedControlCell
     }
@@ -226,10 +227,22 @@ extension SettingsViewController: GesturePickerViewControllerDelegate {
         // Save the settings
 //        settingsProvider.actionSettings[action] = playerGesture
         settingsProvider.actionSettings = newActionSettings
-        // Reload the appropriate rows
+        // TODO: Consider to reload the appropriate rows
+        // Remember to add rows that have been flushed to none
 //        let indexPath = IndexPath(row: action.rawValue, section: actionSettingsSection)
 //        tableView.reloadRows(at: [indexPath], with: .automatic)
         tableView.reloadData()
+    }
+
+}
+
+// MARK: - SegmentedControlCellDelegate
+
+extension SettingsViewController: SegmentedControlCellDelegate {
+
+    func orientationDidChange(to orientation: DeviceOrientation) {
+        // Save the new orientation
+        settingsProvider.orientation = orientation
     }
 
 }

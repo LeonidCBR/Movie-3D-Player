@@ -55,6 +55,7 @@ final class SettingsProvider {
 
     // MARK: - Methods
 
+    // MARK: FieldOfView
     func getFieldOfView() -> CGFloat {
         if let fieldOfViewObject = userDefaults.object(forKey: SettingsProperties.FieldOfView.key),
            let fieldOfViewValue = (fieldOfViewObject as? CGFloat) {
@@ -68,6 +69,7 @@ final class SettingsProvider {
         userDefaults.set(fieldOfView, forKey: SettingsProperties.FieldOfView.key)
     }
 
+    // MARK: Space
     func getSpace() -> CGFloat {
         if let spaceObject = userDefaults.object(forKey: SettingsProperties.Space.key),
         let spaceValue = (spaceObject as? CGFloat) {
@@ -81,6 +83,7 @@ final class SettingsProvider {
         userDefaults.set(space, forKey: SettingsProperties.Space.key)
     }
 
+    // MARK: DeviceOrientation
     func getDeviceOrientation() -> DeviceOrientation {
         if let orientationRawValue = userDefaults.object(forKey: SettingsProperties.Orientation.key) as? Int,
            let orientation = DeviceOrientation(rawValue: orientationRawValue) {
@@ -94,6 +97,7 @@ final class SettingsProvider {
         userDefaults.set(orientation.rawValue, forKey: SettingsProperties.Orientation.key)
     }
 
+    // MARK: ActionSettings
     func getActionSettings() -> [PlayerAction: PlayerGesture] {
         if let encodedSettings = userDefaults.object(forKey: SettingsProperties.actionSettingsKey)
             as? [String: Int] {
