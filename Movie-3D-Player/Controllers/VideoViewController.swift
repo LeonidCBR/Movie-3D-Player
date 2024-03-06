@@ -104,7 +104,12 @@ class VideoViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscapeRight
+        switch settingsProvider.orientation {
+        case .leftSideDown:
+            return .landscapeRight
+        case .rightSideDown:
+            return .landscapeLeft
+        }
     }
 
 //    override var shouldAutorotate: Bool {
@@ -449,10 +454,24 @@ extension VideoViewController: SCNSceneRendererDelegate {
             return
         }
         let cmQuaternion = deviceMotion.attitude.quaternion
-        let scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
-                                          y: Float(cmQuaternion.x),
-                                          z: Float(cmQuaternion.z),
-                                          w: Float(cmQuaternion.w))
+        // TODO: Make a refactor
+//        let scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
+//                                          y: Float(cmQuaternion.x),
+//                                          z: Float(cmQuaternion.z),
+//                                          w: Float(cmQuaternion.w))
+        let scnQuaternion: SCNQuaternion
+        switch settingsProvider.orientation {
+        case .leftSideDown:
+            scnQuaternion = SCNQuaternion(x: Float(-cmQuaternion.y),
+                                              y: Float(cmQuaternion.x),
+                                              z: Float(cmQuaternion.z),
+                                              w: Float(cmQuaternion.w))
+        case .rightSideDown:
+            scnQuaternion = SCNQuaternion(x: Float(cmQuaternion.y),
+                                              y: Float(-cmQuaternion.x),
+                                              z: Float(cmQuaternion.z),
+                                              w: Float(cmQuaternion.w))
+        }
         cameraNode.orientation = scnQuaternion
     }
 
