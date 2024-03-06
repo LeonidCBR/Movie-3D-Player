@@ -11,6 +11,7 @@
 		B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF32B2702A90039C1A7 /* SceneProperties.swift */; };
 		B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF52B2850210039C1A7 /* SettingsProperties.swift */; };
 		B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BB6B02B2FED330053E445 /* SettingsProvider.swift */; };
+		B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */; };
 		B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */; };
 		B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */; };
 		B8F1DE1C2B2AAC7300E134D3 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */; };
@@ -32,6 +33,7 @@
 		B8500EF32B2702A90039C1A7 /* SceneProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProperties.swift; sourceTree = "<group>"; };
 		B8500EF52B2850210039C1A7 /* SettingsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProperties.swift; sourceTree = "<group>"; };
 		B89BB6B02B2FED330053E445 /* SettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProvider.swift; sourceTree = "<group>"; };
+		B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
 		B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
 		B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGesture.swift; sourceTree = "<group>"; };
 		B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
@@ -61,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B8CE16902B9830190072CD61 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B89BB6B02B2FED330053E445 /* SettingsProvider.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		D70C958626EB7D6300455017 = {
 			isa = PBXGroup;
 			children = (
@@ -80,9 +90,10 @@
 		D70C959126EB7D6300455017 /* Movie-3D-Player */ = {
 			isa = PBXGroup;
 			children = (
-				D7CF882526EED32D004D433F /* Model */,
-				D79B16BA29DB99A300D35ADF /* View */,
-				D7CF882226EED075004D433F /* Controller */,
+				D7CF882526EED32D004D433F /* Models */,
+				D79B16BA29DB99A300D35ADF /* Views */,
+				D7CF882226EED075004D433F /* Controllers */,
+				B8CE16902B9830190072CD61 /* Services */,
 				D70C959226EB7D6300455017 /* AppDelegate.swift */,
 				D70C959426EB7D6300455017 /* SceneDelegate.swift */,
 				D70C959B26EB7D6800455017 /* Assets.xcassets */,
@@ -93,16 +104,17 @@
 			path = "Movie-3D-Player";
 			sourceTree = "<group>";
 		};
-		D79B16BA29DB99A300D35ADF /* View */ = {
+		D79B16BA29DB99A300D35ADF /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				D79B16B829DB999900D35ADF /* InputTextCell.swift */,
 				B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */,
+				B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		D7CF882226EED075004D433F /* Controller */ = {
+		D7CF882226EED075004D433F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */,
@@ -110,10 +122,10 @@
 				D7583BB229DA7BE500EC316C /* SettingsViewController.swift */,
 				B8287A892B91904A002B8195 /* GesturePickerViewController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
-		D7CF882526EED32D004D433F /* Model */ = {
+		D7CF882526EED32D004D433F /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				D7CF882626EED340004D433F /* Document.swift */,
@@ -122,9 +134,8 @@
 				B8500EF52B2850210039C1A7 /* SettingsProperties.swift */,
 				B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */,
 				B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */,
-				B89BB6B02B2FED330053E445 /* SettingsProvider.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +233,7 @@
 			files = (
 				D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */,
 				B8287A8A2B91904A002B8195 /* GesturePickerViewController.swift in Sources */,
+				B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */,
 				B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */,
 				D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */,
 				B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */,

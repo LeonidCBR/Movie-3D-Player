@@ -10,12 +10,15 @@ import UIKit
 class SettingsViewController: UITableViewController {
 
     // TODO: Consider to move into the SettingsProvider
-    let numberOfSettingsSections = 2
+    let numberOfSettingsSections = 3
     let commonSettingsSection = 0
-    let actionSettingsSection = 1
+//    let actionSettingsSection = 1
+    let playerSettingsSection = 1
+    let actionSettingsSection = 2
 
     let inputTextCellIdentifier = "InputTextCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
+    let segmentedControlCellIdentifier = "SegmentedControlCellIdentifier"
     let settingsProvider: SettingsProvider
 
     // MARK: - Lifecycle
@@ -33,6 +36,7 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(InputTextCell.self, forCellReuseIdentifier: inputTextCellIdentifier)
         tableView.register(ActionCell.self, forCellReuseIdentifier: actionCellIdentifier)
+        tableView.register(SegmentedControlCell.self, forCellReuseIdentifier: segmentedControlCellIdentifier)
         title = "Settings"
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         /*
@@ -54,6 +58,8 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == actionSettingsSection {
             return "Actions"
+        } else if section == playerSettingsSection {
+            return "Orientation of the player"
         } else {
             return nil
         }
@@ -64,6 +70,9 @@ class SettingsViewController: UITableViewController {
             return SettingsOption.allCases.count
         } else if section == actionSettingsSection {
             return PlayerAction.allCases.count
+        } else if section == playerSettingsSection {
+            // There is only one row
+            return 1
         } else {
             return 0
         }
@@ -74,6 +83,8 @@ class SettingsViewController: UITableViewController {
             return getCommonCell(forRowAt: indexPath)
         } else if indexPath.section == actionSettingsSection {
             return getActionCell(forRowAt: indexPath)
+        } else if indexPath.section == playerSettingsSection {
+            return getSegmentedControlCell(forRowAt: indexPath)
         } else {
             // Falling back
             return UITableViewCell()
@@ -126,6 +137,17 @@ class SettingsViewController: UITableViewController {
         actionCell.gestureLabel.text = playerGestureDescription
         actionCell.tag = indexPath.row
         return actionCell
+    }
+
+    func getSegmentedControlCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let segmentedControlCell = tableView.dequeueReusableCell(
+            withIdentifier: segmentedControlCellIdentifier,
+            for: indexPath) as? SegmentedControlCell else {
+            return UITableViewCell()
+        }
+        // TODO: configure
+        // ...
+        return segmentedControlCell
     }
 
     // MARK: - Methods
