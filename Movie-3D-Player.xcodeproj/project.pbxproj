@@ -22,6 +22,7 @@
 		D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70C959626EB7D6300455017 /* VideoViewController.swift */; };
 		D70C959C26EB7D6800455017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D70C959B26EB7D6800455017 /* Assets.xcassets */; };
 		D70C959F26EB7D6800455017 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */; };
+		D73810B52B996A7D009FFC02 /* VideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73810B42B996A7D009FFC02 /* VideoViewModel.swift */; };
 		D739BA1F276091D2002B1D53 /* SceneKit Asset Catalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */; };
 		D7583BB329DA7BE600EC316C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7583BB229DA7BE500EC316C /* SettingsViewController.swift */; };
 		D79B16B929DB999A00D35ADF /* InputTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79B16B829DB999900D35ADF /* InputTextCell.swift */; };
@@ -48,6 +49,7 @@
 		D70C959B26EB7D6800455017 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D70C959E26EB7D6800455017 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D70C95A026EB7D6800455017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D73810B42B996A7D009FFC02 /* VideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewModel.swift; sourceTree = "<group>"; };
 		D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = "SceneKit Asset Catalog.scnassets"; sourceTree = "<group>"; };
 		D7583BB229DA7BE500EC316C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D79B16B829DB999900D35ADF /* InputTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextCell.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				D7CF882526EED32D004D433F /* Models */,
 				D79B16BA29DB99A300D35ADF /* Views */,
+				D73810B32B996A55009FFC02 /* ViewModels */,
 				D7CF882226EED075004D433F /* Controllers */,
 				B8CE16902B9830190072CD61 /* Services */,
 				D70C959226EB7D6300455017 /* AppDelegate.swift */,
@@ -106,6 +109,14 @@
 				D70C95A026EB7D6800455017 /* Info.plist */,
 			);
 			path = "Movie-3D-Player";
+			sourceTree = "<group>";
+		};
+		D73810B32B996A55009FFC02 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D73810B42B996A7D009FFC02 /* VideoViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		D79B16BA29DB99A300D35ADF /* Views */ = {
@@ -244,6 +255,7 @@
 				B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */,
 				D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */,
 				B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */,
+				D73810B52B996A7D009FFC02 /* VideoViewModel.swift in Sources */,
 				D7CF882726EED340004D433F /* Document.swift in Sources */,
 				D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */,
 				D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */,
