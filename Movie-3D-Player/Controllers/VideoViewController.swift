@@ -41,6 +41,7 @@ class VideoViewController: UIViewController {
 
     deinit {
         UIApplication.shared.isIdleTimerDisabled = false
+        print("DEBUG: Deinit of the view controller")
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -124,201 +125,159 @@ class VideoViewController: UIViewController {
     }
 
     func configureGestures() {
-/*
-
-        // TODO: Consider to refactor it
-        // and move to VM
-        // There would be only gestures
-
-        for gesture in PlayerGesture.allCases {
-            switch gesture {
-            case .none:
-                break
-            case .singleTap:
-                <#code#>
-            case .singleTapTwoFingers:
-                <#code#>
-            case .swipeUp:
-                <#code#>
-            case .swipeDown:
-                <#code#>
-            case .swipeLeft:
-                <#code#>
-            case .swipeRight:
-                <#code#>
-            case .swipeUpTwoFingers:
-                <#code#>
-            case .swipeDownTwoFingers:
-                <#code#>
-            }
+        var allAvailableGestures: [PlayerGesture: () -> Void] = [:]
+        allAvailableGestures[.singleTap] = createSingleTapGesture
+        allAvailableGestures[.singleTapTwoFingers] = createSingleTapTwoFingers
+        allAvailableGestures[.swipeUp] = createSwipeUp
+        allAvailableGestures[.swipeDown] = createSwipeDown
+        allAvailableGestures[.swipeLeft] = createSwipeLeft
+        allAvailableGestures[.swipeRight] = createSwipeRight
+        allAvailableGestures[.swipeUpTwoFingers] = createSwipeUpTwoFingers
+        allAvailableGestures[.swipeDownTwoFingers] = createSwipeDownTwoFingers
+        // Create and activate only customized gestures
+        for gesture in viewModel.gestures {
+            allAvailableGestures[gesture]?()
         }
-
-
-//        let myActions: [PlayerAction: Selector]
-//        for action in PlayerAction.allCases {
-//            switch action {
-//            case .closeVC:
-//                myActions[.closeVC] = #selector(handleDismiss(_:))
-//            case .play:
-//                myActions[.play] = #selector(handlePlay(_:))
-//            case .resetScenePosition:
-//                myActions[.resetScenePosition] = #selector(handleInitScenePosition(_:))
-//            case .increaseFOV:
-//                myActions[.increaseFOV] = #selector(handleIncreaseFOV(_:))
-//            case .decreaseFOV:
-//                myActions[.decreaseFOV] = #selector(handleDecreaseFOV(_:))
-//            case .rewindBackward:
-//                myActions[.rewindBackward] = #selector(handleRewindBackward(_:))
-//            case .rewindForward:
-//                myActions[.rewindForward] = #selector(handleRewindForward(_:))
-//            }
-//        }
-        let actions: [PlayerAction: Selector] = [.closeVC: #selector(handleDismiss(_:)),
-                                                 .play: #selector(handlePlay(_:)),
-                                                 .resetScenePosition: #selector(handleInitScenePosition(_:)),
-                                                 .increaseFOV: #selector(handleIncreaseFOV(_:)),
-                                                 .decreaseFOV: #selector(handleDecreaseFOV(_:)),
-                                                 .rewindBackward: #selector(handleRewindBackward(_:)),
-                                                 .rewindForward: #selector(handleRewindForward(_:))]
-        let gestures: [PlayerGesture: (Selector) -> UIGestureRecognizer] = [
-            .singleTap: getSingleTapGesture,
-            .singleTapTwoFingers: getSingleTapTwoFingersGesture,
-            .swipeUp: getSwipeUpGesture,
-            .swipeDown: getSwipeDownGesture,
-            .swipeLeft: getSwipeLeftGesture,
-            .swipeRight: getSwipeRightGesture,
-            .swipeUpTwoFingers: getSwipeUpTwoFingersGesture,
-            .swipeDownTwoFingers: getSwipeDownTwoFingersGesture]
-        // Prepare gesture recognizers and register it.
-        let actionSettings = settingsProvider.actionSettings
-        for (key, value) in actionSettings {
-            // key -> .play - action
-            // value -> .singleTwoFingersTap - gesture
-            if let selector = actions[key],
-               let gesture = gestures[value]?(selector) {
-                view.addGestureRecognizer(gesture)
-            }
-        }
-*/
     }
 
-    func getSingleTapGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let singleTap = UITapGestureRecognizer(target: self, action: selector)
+    func createSingleTapGesture() {
+        let singleTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleSingleTap(_:)))
         singleTap.numberOfTapsRequired = 1
         singleTap.numberOfTouchesRequired = 1
-        return singleTap
+        view.addGestureRecognizer(singleTap)
     }
 
-    func getSingleTapTwoFingersGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let singleTapTwoFingers = UITapGestureRecognizer(target: self, action: selector)
+    func createSingleTapTwoFingers() {
+        let singleTapTwoFingers = UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleSingleTapTwoFingers(_:)))
         singleTapTwoFingers.numberOfTapsRequired = 1
         singleTapTwoFingers.numberOfTouchesRequired = 2
-        return singleTapTwoFingers
+        view.addGestureRecognizer(singleTapTwoFingers)
     }
 
-    func getSwipeUpGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeUp() {
+        let swipeUp = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeUp(_:)))
         swipeUp.direction = .up
         swipeUp.numberOfTouchesRequired = 1
-        return swipeUp
+        view.addGestureRecognizer(swipeUp)
     }
 
-    func getSwipeDownGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeDown() {
+        let swipeDown = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeDown(_:)))
         swipeDown.direction = .down
         swipeDown.numberOfTouchesRequired = 1
-        return swipeDown
+        view.addGestureRecognizer(swipeDown)
     }
 
-    func getSwipeLeftGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeLeft() {
+        let swipeLeft = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeLeft(_:)))
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 1
-        return swipeLeft
+        view.addGestureRecognizer(swipeLeft)
     }
 
-    func getSwipeRightGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeRight() {
+        let swipeRight = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeRight(_:)))
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 1
-        return swipeRight
+        view.addGestureRecognizer(swipeRight)
     }
 
-    func getSwipeUpTwoFingersGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeUpTwoFingers = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeUpTwoFingers() {
+        let swipeUpTwoFingers = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeUpTwoFingers(_:)))
         swipeUpTwoFingers.direction = .up
         swipeUpTwoFingers.numberOfTouchesRequired = 2
-        return swipeUpTwoFingers
+        view.addGestureRecognizer(swipeUpTwoFingers)
     }
 
-    func getSwipeDownTwoFingersGesture(_ selector: Selector) -> UIGestureRecognizer {
-        let swipeDownTwoFingers = UISwipeGestureRecognizer(target: self, action: selector)
+    func createSwipeDownTwoFingers() {
+        let swipeDownTwoFingers = UISwipeGestureRecognizer(
+            target: self,
+            action: #selector(handleSwipeDownTwoFingers(_:)))
         swipeDownTwoFingers.direction = .down
         swipeDownTwoFingers.numberOfTouchesRequired = 2
-        return swipeDownTwoFingers
+        view.addGestureRecognizer(swipeDownTwoFingers)
     }
 
     // MARK: - Selectors
 
-    // TODO: Or we should use like:
-    // func handleSwipeDown {
-    // ...
-    // viewModel.handle(.swipeDown)
-
-    /** Play/pause */
-    @objc func handlePlay(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSingleTap(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.isPlaying.toggle()
+            viewModel.handleGesture(.singleTap)
         }
     }
 
-    /** Init view of the scene by rotating the sphere according the camera's view */
-    @objc func handleInitScenePosition(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSingleTapTwoFingers(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.initScenePosition()
+            viewModel.handleGesture(.singleTapTwoFingers)
         }
     }
 
-    /** Increase value of FOV */
-    @objc func handleIncreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSwipeUp(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.increaseFOV()
+            viewModel.handleGesture(.swipeUp)
         }
     }
 
-    /** Decrease value of FOV */
-    @objc func handleDecreaseFOV(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSwipeDown(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.decreaseFOV()
+            viewModel.handleGesture(.swipeDown)
         }
     }
 
-    /** Rewind backward */
-    @objc func handleRewindBackward(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSwipeLeft(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.seekBackward(by: 20)
+            viewModel.handleGesture(.swipeLeft)
         }
     }
 
-    /** Rewind forward */
-    @objc func handleRewindForward(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSwipeRight(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            viewModel.seekForward(by: 20)
+            viewModel.handleGesture(.swipeRight)
         }
     }
 
-    /** Dismiss controller */
-    @objc func handleDismiss(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleSwipeUpTwoFingers(_ gestureRecognizer: UIGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .ended {
-            dismiss(animated: true)
+            viewModel.handleGesture(.swipeUpTwoFingers)
         }
+    }
+
+    @objc func handleSwipeDownTwoFingers(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        if gestureRecognizer.state == .ended {
+            viewModel.handleGesture(.swipeDownTwoFingers)
+        }
+    }
+
+}
+
+// MARK: - VideoViewModelDelegate
+
+extension VideoViewController: VideoViewModelDelegate {
+
+    func closeVideo() {
+        dismiss(animated: true)
     }
 
 }

@@ -12,6 +12,10 @@ import SpriteKit
 import SceneKit
 import MediaPlayer
 
+protocol VideoViewModelDelegate: AnyObject {
+    func closeVideo()
+}
+
 final class VideoViewModel {
     let rendererDelegate: RendererDelegate
     let settingsProvider: SettingsProvider
@@ -20,6 +24,8 @@ final class VideoViewModel {
     let videoFile: Document
     let leftScene: SCNScene
     let rightScene: SCNScene
+    var allAvailableActions: [PlayerAction: () -> Void] = [:]
+    weak var delegate: VideoViewModelDelegate?
 
     lazy var cameraNodeLeft: SCNNode = {
         guard let cameraNode = leftScene.rootNode.childNode(
@@ -67,6 +73,10 @@ final class VideoViewModel {
         return settingsProvider.space
     }
 
+    var gestures: Set<PlayerGesture> {
+        return getGestures()
+    }
+
     var isPlaying = false {
         didSet {
             if isPlaying {
@@ -93,11 +103,16 @@ final class VideoViewModel {
         self.rightScene = rightScene
     }
 
+    deinit {
+        print("DEBUG: Deinit of the view model")
+    }
+
     func configurePlayer() {
         videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
         createVideoScene()
         initScenePosition()
         configureCameras()
+        configureActions()
         setupRemoteTransportControls()
         setupNowPlaying()
     }
@@ -117,6 +132,7 @@ final class VideoViewModel {
         domeNodeRight.geometry?.firstMaterial?.diffuse.contents = videoSKScene
     }
 
+    /// Init view of the scene by rotating the sphere according the camera's view
     func initScenePosition() {
         domeNodeLeft.eulerAngles.z = cameraNodeLeft.eulerAngles.z
         domeNodeRight.eulerAngles.z = cameraNodeRight.eulerAngles.z + .pi
@@ -180,10 +196,19 @@ final class VideoViewModel {
         isPlaying = true
     }
 
+    /// Play/pause
+    func playPause() {
+        isPlaying.toggle()
+    }
+
     func seekBackward(by seconds: CMTimeValue) {
         let delta = CMTime(value: seconds, timescale: 1)
         let newTime = videoPlayer.currentTime() - delta
         videoPlayer.seek(to: newTime)
+    }
+
+    func rewindBackward() {
+        seekBackward(by: 20)
     }
 
     func seekForward(by seconds: CMTimeValue) {
@@ -192,6 +217,11 @@ final class VideoViewModel {
         videoPlayer.seek(to: newTime)
     }
 
+    func rewindForward() {
+        seekForward(by: 20)
+    }
+
+    /// Increase value of FOV
     func increaseFOV() {
         if let leftCamera = cameraNodeLeft.camera,
            leftCamera.fieldOfView < SettingsProperties.FieldOfView.maxThreshold {
@@ -203,6 +233,7 @@ final class VideoViewModel {
         }
     }
 
+    /// Decrease value of FOV
     func decreaseFOV() {
         if let leftCamera = cameraNodeLeft.camera,
            leftCamera.fieldOfView > SettingsProperties.FieldOfView.minThreshold {
@@ -211,6 +242,45 @@ final class VideoViewModel {
         if let rightCamera = cameraNodeRight.camera,
            rightCamera.fieldOfView > SettingsProperties.FieldOfView.minThreshold {
             rightCamera.fieldOfView -= 5
+        }
+    }
+
+    /// Get all gestures from settings
+    func getGestures() -> Set<PlayerGesture> {
+        var gestures: Set<PlayerGesture> = []
+        let actionSettings = settingsProvider.actionSettings
+        // key -> .play - action
+        // value -> .singleTwoFingersTap - gesture
+        for (_, value) in actionSettings where value != .none {
+            gestures.insert(value)
+        }
+        print("DEBUG: Gestures => \(gestures)")
+        return gestures
+    }
+
+    func configureActions() {
+        allAvailableActions[.closeVC] = closeVideo
+        allAvailableActions[.play] = playPause
+        allAvailableActions[.resetScenePosition] = initScenePosition
+        allAvailableActions[.increaseFOV] = increaseFOV
+        allAvailableActions[.decreaseFOV] = decreaseFOV
+        allAvailableActions[.rewindBackward] = rewindBackward
+        allAvailableActions[.rewindForward] = rewindForward
+    }
+
+    func closeVideo() {
+        delegate?.closeVideo()
+    }
+
+    func handleGesture(_ gesture: PlayerGesture) {
+        let actionSettings = settingsProvider.actionSettings
+//        for (key, value) in actionSettings where value !=  {
+//            gestures.insert(value)
+//        }
+        if let action = actionSettings.first(where: { (_: PlayerAction, value: PlayerGesture) in
+            value == gesture
+        })?.key {
+            allAvailableActions[action]?()
         }
     }
 

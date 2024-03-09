@@ -80,6 +80,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
                                             leftScene: leftScene,
                                             rightScene: rightScene)
         let videoViewController = VideoViewController(with: videoViewModel)
+        videoViewModel.delegate = videoViewController
         videoViewController.modalPresentationStyle = .fullScreen
         present(videoViewController, animated: true)
     }
