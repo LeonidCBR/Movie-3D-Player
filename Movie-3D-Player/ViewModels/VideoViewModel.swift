@@ -269,6 +269,8 @@ final class VideoViewModel {
     }
 
     func closeVideo() {
+        // In order to prevent retain cycle, reset the dict
+        allAvailableActions = [:]
         delegate?.closeVideo()
     }
 
