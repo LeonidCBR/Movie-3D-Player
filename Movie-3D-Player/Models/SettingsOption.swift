@@ -14,9 +14,9 @@ enum SettingsOption: Int, CaseIterable, CustomStringConvertible {
     var description: String {
         switch self {
         case .fieldOfView:
-            return NSLocalizedString("Field of view", comment: "")
+            return String(localized: "Field of view")
         case .space:
-            return NSLocalizedString("Space", comment: "")
+            return String(localized: "Space")
         }
     }
 }

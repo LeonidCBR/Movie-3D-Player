@@ -254,7 +254,6 @@ final class VideoViewModel {
         for (_, value) in actionSettings where value != .none {
             gestures.insert(value)
         }
-        print("DEBUG: Gestures => \(gestures)")
         return gestures
     }
 

@@ -20,15 +20,24 @@ enum PlayerGesture: Int, CustomStringConvertible, CaseIterable {
 
     var description: String {
         switch self {
-        case .none: return "None"
-        case .singleTap: return "Single tap"
-        case .singleTapTwoFingers: return "Single tap by two fingers"
-        case .swipeUp: return "Swipe up"
-        case .swipeDown: return "Swipe down"
-        case .swipeLeft: return "Swipe to left"
-        case .swipeRight: return "Swipe to right"
-        case .swipeUpTwoFingers: return "Swipe up by two fingers"
-        case .swipeDownTwoFingers: return "Swipe down by two fingers"
+        case .none:
+            return String(localized: "None")
+        case .singleTap:
+            return String(localized: "Single tap")
+        case .singleTapTwoFingers:
+            return String(localized: "Single tap by two fingers")
+        case .swipeUp:
+            return String(localized: "Swipe up")
+        case .swipeDown:
+            return String(localized: "Swipe down")
+        case .swipeLeft:
+            return String(localized: "Swipe to left")
+        case .swipeRight:
+            return String(localized: "Swipe to right")
+        case .swipeUpTwoFingers:
+            return String(localized: "Swipe up by two fingers")
+        case .swipeDownTwoFingers:
+            return String(localized: "Swipe down by two fingers")
         }
     }
 

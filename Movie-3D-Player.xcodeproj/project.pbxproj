@@ -10,6 +10,7 @@
 		B8287A8A2B91904A002B8195 /* GesturePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8287A892B91904A002B8195 /* GesturePickerViewController.swift */; };
 		B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF32B2702A90039C1A7 /* SceneProperties.swift */; };
 		B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF52B2850210039C1A7 /* SettingsProperties.swift */; };
+		B879ADDE2BB688A90087D480 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B879ADDD2BB688A90087D480 /* Localizable.xcstrings */; };
 		B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BB6B02B2FED330053E445 /* SettingsProvider.swift */; };
 		B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */; };
 		B8CE16922B9831B10072CD61 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */; };
@@ -35,6 +36,8 @@
 		B8287A892B91904A002B8195 /* GesturePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GesturePickerViewController.swift; sourceTree = "<group>"; };
 		B8500EF32B2702A90039C1A7 /* SceneProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProperties.swift; sourceTree = "<group>"; };
 		B8500EF52B2850210039C1A7 /* SettingsProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProperties.swift; sourceTree = "<group>"; };
+		B879ADDC2BB687D20087D480 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B879ADDD2BB688A90087D480 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B89BB6B02B2FED330053E445 /* SettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProvider.swift; sourceTree = "<group>"; };
 		B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
 		B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 				D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */,
 				D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */,
 				D70C95A026EB7D6800455017 /* Info.plist */,
+				B879ADDD2BB688A90087D480 /* Localizable.xcstrings */,
 			);
 			path = "Movie-3D-Player";
 			sourceTree = "<group>";
@@ -198,6 +202,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = D70C958626EB7D6300455017;
 			productRefGroup = D70C959026EB7D6300455017 /* Products */;
@@ -216,6 +221,7 @@
 			files = (
 				D739BA1F276091D2002B1D53 /* SceneKit Asset Catalog.scnassets in Resources */,
 				D70C959F26EB7D6800455017 /* LaunchScreen.storyboard in Resources */,
+				B879ADDE2BB688A90087D480 /* Localizable.xcstrings in Resources */,
 				D70C959C26EB7D6800455017 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,6 +283,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				D70C959E26EB7D6800455017 /* Base */,
+				B879ADDC2BB687D20087D480 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -289,6 +296,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -352,6 +360,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -413,6 +422,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
 				INFOPLIST_FILE = "$(SRCROOT)/Movie-3D-Player/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -424,6 +434,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -438,6 +449,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
 				INFOPLIST_FILE = "$(SRCROOT)/Movie-3D-Player/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -449,6 +461,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

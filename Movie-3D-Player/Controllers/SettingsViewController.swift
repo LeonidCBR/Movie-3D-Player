@@ -37,7 +37,7 @@ class SettingsViewController: UITableViewController {
         tableView.register(InputTextCell.self, forCellReuseIdentifier: inputTextCellIdentifier)
         tableView.register(ActionCell.self, forCellReuseIdentifier: actionCellIdentifier)
         tableView.register(SegmentedControlCell.self, forCellReuseIdentifier: segmentedControlCellIdentifier)
-        title = "Settings"
+        title = String(localized: "Settings")
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         /*
          There could be issues if you are dealing with tableviews and adding this tap gesture,
@@ -57,9 +57,9 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == actionSettingsSection {
-            return "Actions"
+            return String(localized: "Actions")
         } else if section == playerSettingsSection {
-            return "Orientation of the player"
+            return String(localized: "Orientation of the player")
         } else {
             return nil
         }
@@ -133,8 +133,11 @@ class SettingsViewController: UITableViewController {
             return UITableViewCell()
         }
         actionCell.actionLabel.text = playerAction.description
-        let playerGestureDescription = settingsProvider.actionSettings[playerAction]?.description ?? "None"
-        actionCell.gestureLabel.text = playerGestureDescription
+        if let playerGestureDescription = settingsProvider.actionSettings[playerAction]?.description {
+            actionCell.gestureLabel.text = playerGestureDescription
+        } else {
+            actionCell.gestureLabel.text = String(localized: "None")
+        }
         actionCell.tag = indexPath.row
         return actionCell
     }

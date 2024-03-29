@@ -18,13 +18,20 @@ enum PlayerAction: Int, CaseIterable, CustomStringConvertible, CodingKey {
 
     var description: String {
         switch self {
-        case .closeVC: return "Close video"
-        case .play: return "Play/Pause"
-        case .resetScenePosition: return "Reset position of the scene"
-        case .increaseFOV: return "Increase the field of view"
-        case .decreaseFOV: return "Decrease the field of view"
-        case .rewindBackward: return "Rewind backward"
-        case .rewindForward: return "Rewind forward"
+        case .closeVC:
+            return String(localized: "Close video")
+        case .play:
+            return String(localized: "Play/Pause")
+        case .resetScenePosition:
+            return String(localized: "Reset position of the scene")
+        case .increaseFOV:
+            return String(localized: "Increase the field of view")
+        case .decreaseFOV:
+            return String(localized: "Decrease the field of view")
+        case .rewindBackward:
+            return String(localized: "Rewind backward")
+        case .rewindForward:
+            return String(localized: "Rewind forward")
         }
     }
 

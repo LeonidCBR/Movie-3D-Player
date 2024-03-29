@@ -13,8 +13,10 @@ enum DeviceOrientation: Int, CaseIterable, CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .leftSideDown: return "Left side down"
-        case .rightSideDown: return "Right side down"
+        case .leftSideDown:
+            return String(localized: "Left side down")
+        case .rightSideDown:
+            return String(localized: "Right side down")
         }
     }
 }

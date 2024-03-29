@@ -21,6 +21,7 @@ class InputTextCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body)
         label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
         return label
     }()
 
