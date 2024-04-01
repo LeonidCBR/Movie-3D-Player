@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D70C958E26EB7D6300455017"
-               BuildableName = "Movie-3D-Player.app"
-               BlueprintName = "Movie-3D-Player"
-               ReferencedContainer = "container:Movie-3D-Player.xcodeproj">
+               BuildableName = "SightVR.app"
+               BlueprintName = "SightVR"
+               ReferencedContainer = "container:SightVR.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D70C958E26EB7D6300455017"
-            BuildableName = "Movie-3D-Player.app"
-            BlueprintName = "Movie-3D-Player"
-            ReferencedContainer = "container:Movie-3D-Player.xcodeproj">
+            BuildableName = "SightVR.app"
+            BlueprintName = "SightVR"
+            ReferencedContainer = "container:SightVR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,9 +63,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D70C958E26EB7D6300455017"
-            BuildableName = "Movie-3D-Player.app"
-            BlueprintName = "Movie-3D-Player"
-            ReferencedContainer = "container:Movie-3D-Player.xcodeproj">
+            BuildableName = "SightVR.app"
+            BlueprintName = "SightVR"
+            ReferencedContainer = "container:SightVR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

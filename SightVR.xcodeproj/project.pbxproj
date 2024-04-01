@@ -45,7 +45,7 @@
 		B8F1DE172B2AA52400E134D3 /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
 		B8F1DE192B2AA53400E134D3 /* PlayerGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGesture.swift; sourceTree = "<group>"; };
 		B8F1DE1B2B2AAC7300E134D3 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
-		D70C958F26EB7D6300455017 /* Movie-3D-Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Movie-3D-Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D70C958F26EB7D6300455017 /* SightVR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SightVR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70C959226EB7D6300455017 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D70C959426EB7D6300455017 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D70C959626EB7D6300455017 /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +83,7 @@
 		D70C958626EB7D6300455017 = {
 			isa = PBXGroup;
 			children = (
-				D70C959126EB7D6300455017 /* Movie-3D-Player */,
+				D70C959126EB7D6300455017 /* SightVR */,
 				D70C959026EB7D6300455017 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,12 +91,12 @@
 		D70C959026EB7D6300455017 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D70C958F26EB7D6300455017 /* Movie-3D-Player.app */,
+				D70C958F26EB7D6300455017 /* SightVR.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D70C959126EB7D6300455017 /* Movie-3D-Player */ = {
+		D70C959126EB7D6300455017 /* SightVR */ = {
 			isa = PBXGroup;
 			children = (
 				D7CF882526EED32D004D433F /* Models */,
@@ -112,7 +112,7 @@
 				D70C95A026EB7D6800455017 /* Info.plist */,
 				B879ADDD2BB688A90087D480 /* Localizable.xcstrings */,
 			);
-			path = "Movie-3D-Player";
+			path = SightVR;
 			sourceTree = "<group>";
 		};
 		D73810B32B996A55009FFC02 /* ViewModels */ = {
@@ -162,9 +162,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D70C958E26EB7D6300455017 /* Movie-3D-Player */ = {
+		D70C958E26EB7D6300455017 /* SightVR */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D70C95A326EB7D6800455017 /* Build configuration list for PBXNativeTarget "Movie-3D-Player" */;
+			buildConfigurationList = D70C95A326EB7D6800455017 /* Build configuration list for PBXNativeTarget "SightVR" */;
 			buildPhases = (
 				D70C958B26EB7D6300455017 /* Sources */,
 				D70C958C26EB7D6300455017 /* Frameworks */,
@@ -175,9 +175,9 @@
 			);
 			dependencies = (
 			);
-			name = "Movie-3D-Player";
+			name = SightVR;
 			productName = 3Dplayer;
-			productReference = D70C958F26EB7D6300455017 /* Movie-3D-Player.app */;
+			productReference = D70C958F26EB7D6300455017 /* SightVR.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -195,7 +195,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D70C958A26EB7D6300455017 /* Build configuration list for PBXProject "Movie-3D-Player" */;
+			buildConfigurationList = D70C958A26EB7D6300455017 /* Build configuration list for PBXProject "SightVR" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -209,7 +209,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D70C958E26EB7D6300455017 /* Movie-3D-Player */,
+				D70C958E26EB7D6300455017 /* SightVR */,
 			);
 		};
 /* End PBXProject section */
@@ -421,7 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
-				INFOPLIST_FILE = "$(SRCROOT)/Movie-3D-Player/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SightVR/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -429,7 +429,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.motodolphin.Movie-3D-Player";
+				PRODUCT_BUNDLE_IDENTIFIER = com.motodolphin.SightVR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -448,7 +448,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
-				INFOPLIST_FILE = "$(SRCROOT)/Movie-3D-Player/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/SightVR/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -456,7 +456,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.motodolphin.Movie-3D-Player";
+				PRODUCT_BUNDLE_IDENTIFIER = com.motodolphin.SightVR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -470,7 +470,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D70C958A26EB7D6300455017 /* Build configuration list for PBXProject "Movie-3D-Player" */ = {
+		D70C958A26EB7D6300455017 /* Build configuration list for PBXProject "SightVR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D70C95A126EB7D6800455017 /* Debug */,
@@ -479,7 +479,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D70C95A326EB7D6800455017 /* Build configuration list for PBXNativeTarget "Movie-3D-Player" */ = {
+		D70C95A326EB7D6800455017 /* Build configuration list for PBXNativeTarget "SightVR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D70C95A426EB7D6800455017 /* Debug */,
