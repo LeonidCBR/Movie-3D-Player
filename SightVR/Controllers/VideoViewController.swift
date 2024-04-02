@@ -41,7 +41,6 @@ class VideoViewController: UIViewController {
 
     deinit {
         UIApplication.shared.isIdleTimerDisabled = false
-        print("DEBUG: Deinit of the view controller")
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {

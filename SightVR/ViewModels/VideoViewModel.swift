@@ -103,10 +103,6 @@ final class VideoViewModel {
         self.rightScene = rightScene
     }
 
-    deinit {
-        print("DEBUG: Deinit of the view model")
-    }
-
     func configurePlayer() {
         videoPlayer.preventsDisplaySleepDuringVideoPlayback = true
         createVideoScene()
