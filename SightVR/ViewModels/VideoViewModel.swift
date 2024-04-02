@@ -185,7 +185,12 @@ final class VideoViewModel {
     }
 
     func startDeviceMotionUpdates() {
-        motionManager.startDeviceMotionUpdates(using: .xMagneticNorthZVertical)
+        let attitudeReferenceFrame = CMMotionManager.availableAttitudeReferenceFrames()
+        if attitudeReferenceFrame.contains(.xArbitraryZVertical) {
+            motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical)
+        } else {
+            motionManager.startDeviceMotionUpdates()
+        }
     }
 
     func stopDeviceMotionUpdates() {
