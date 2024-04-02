@@ -35,11 +35,11 @@
       }
     },
     "Field of view" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Сектор обзора"
           }
         }
@@ -178,12 +178,12 @@
       }
     },
     "Space" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Space between views"
+            "value" : "Gap between views"
           }
         },
         "ru" : {
