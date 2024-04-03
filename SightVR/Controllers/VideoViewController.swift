@@ -111,6 +111,11 @@ class VideoViewController: UIViewController {
         sceneViewRight.delegate = viewModel.rendererDelegate
     }
 
+    /// Ask the view model to release resources in order to close video playback
+    func closeVideo() {
+        viewModel.closeVideo()
+    }
+
     override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
         guard let key = presses.first?.key else { return }
         switch key.keyCode {
@@ -275,7 +280,7 @@ class VideoViewController: UIViewController {
 
 extension VideoViewController: VideoViewModelDelegate {
 
-    func closeVideo() {
+    func videoDidClose() {
         dismiss(animated: true)
     }
 

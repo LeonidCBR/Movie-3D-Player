@@ -9,7 +9,6 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
-    // TODO: Consider to move into the SettingsProvider
     let numberOfSettingsSections = 3
     let commonSettingsSection = 0
 //    let actionSettingsSection = 1

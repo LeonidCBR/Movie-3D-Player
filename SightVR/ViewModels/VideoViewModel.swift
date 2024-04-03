@@ -13,7 +13,7 @@ import SceneKit
 import MediaPlayer
 
 protocol VideoViewModelDelegate: AnyObject {
-    func closeVideo()
+    func videoDidClose()
 }
 
 final class VideoViewModel {
@@ -271,7 +271,7 @@ final class VideoViewModel {
     func closeVideo() {
         // In order to prevent retain cycle, reset the dict
         allAvailableActions = [:]
-        delegate?.closeVideo()
+        delegate?.videoDidClose()
     }
 
     func handleGesture(_ gesture: PlayerGesture) {

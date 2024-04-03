@@ -20,6 +20,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
     }
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let context = URLContexts.first,
+              let documentBrowserVC = window?.rootViewController as? DocumentBrowserViewController
+        else {
+            return
+        }
+        // Close the previous video controller if it's presented
+        if let videoVC = documentBrowserVC.presentedViewController as? VideoViewController {
+            videoVC.closeVideo()
+        }
+        documentBrowserVC.presentVideo(at: context.url)
+    }
+
+    // TODO: Concider to get rid of these functions
+
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
