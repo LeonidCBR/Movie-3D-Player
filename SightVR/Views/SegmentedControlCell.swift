@@ -11,6 +11,7 @@ protocol SegmentedControlCellDelegate: AnyObject {
     func orientationDidChange(to orientation: DeviceOrientation)
 }
 
+/// A segmented control represents horizontal orientation of the device
 class SegmentedControlCell: UITableViewCell {
 
     // MARK: - Properties

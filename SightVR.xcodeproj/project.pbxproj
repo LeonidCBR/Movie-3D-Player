@@ -12,6 +12,7 @@
 		B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8500EF52B2850210039C1A7 /* SettingsProperties.swift */; };
 		B879ADDE2BB688A90087D480 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B879ADDD2BB688A90087D480 /* Localizable.xcstrings */; };
 		B89BB6B12B2FED330053E445 /* SettingsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89BB6B02B2FED330053E445 /* SettingsProvider.swift */; };
+		B8BC48572BBE4C9B00F7376D /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = B8BC48562BBE4C9B00F7376D /* Documentation.docc */; };
 		B8CE168F2B982C150072CD61 /* SegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */; };
 		B8CE16922B9831B10072CD61 /* DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */; };
 		B8CE16942B9863E50072CD61 /* RendererDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CE16932B9863E50072CD61 /* RendererDelegate.swift */; };
@@ -29,7 +30,6 @@
 		D79B16B929DB999A00D35ADF /* InputTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79B16B829DB999900D35ADF /* InputTextCell.swift */; };
 		D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79B16BB29DBC13900D35ADF /* SettingsOption.swift */; };
 		D7CF882126EED057004D433F /* DocumentBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */; };
-		D7CF882726EED340004D433F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CF882626EED340004D433F /* Document.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +39,7 @@
 		B879ADDC2BB687D20087D480 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B879ADDD2BB688A90087D480 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B89BB6B02B2FED330053E445 /* SettingsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsProvider.swift; sourceTree = "<group>"; };
+		B8BC48562BBE4C9B00F7376D /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		B8CE168E2B982C150072CD61 /* SegmentedControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlCell.swift; sourceTree = "<group>"; };
 		B8CE16912B9831B10072CD61 /* DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceOrientation.swift; sourceTree = "<group>"; };
 		B8CE16932B9863E50072CD61 /* RendererDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererDelegate.swift; sourceTree = "<group>"; };
@@ -58,7 +59,6 @@
 		D79B16B829DB999900D35ADF /* InputTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputTextCell.swift; sourceTree = "<group>"; };
 		D79B16BB29DBC13900D35ADF /* SettingsOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsOption.swift; sourceTree = "<group>"; };
 		D7CF882026EED056004D433F /* DocumentBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentBrowserViewController.swift; sourceTree = "<group>"; };
-		D7CF882626EED340004D433F /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +106,7 @@
 				B8CE16902B9830190072CD61 /* Services */,
 				D70C959226EB7D6300455017 /* AppDelegate.swift */,
 				D70C959426EB7D6300455017 /* SceneDelegate.swift */,
+				B8BC48562BBE4C9B00F7376D /* Documentation.docc */,
 				D70C959B26EB7D6800455017 /* Assets.xcassets */,
 				D739BA1E276091D2002B1D53 /* SceneKit Asset Catalog.scnassets */,
 				D70C959D26EB7D6800455017 /* LaunchScreen.storyboard */,
@@ -147,7 +148,6 @@
 		D7CF882526EED32D004D433F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D7CF882626EED340004D433F /* Document.swift */,
 				D79B16BB29DBC13900D35ADF /* SettingsOption.swift */,
 				B8500EF32B2702A90039C1A7 /* SceneProperties.swift */,
 				B8500EF52B2850210039C1A7 /* SettingsProperties.swift */,
@@ -262,7 +262,6 @@
 				D79B16BC29DBC13900D35ADF /* SettingsOption.swift in Sources */,
 				B8F1DE182B2AA52400E134D3 /* PlayerAction.swift in Sources */,
 				D73810B52B996A7D009FFC02 /* VideoViewModel.swift in Sources */,
-				D7CF882726EED340004D433F /* Document.swift in Sources */,
 				D70C959726EB7D6300455017 /* VideoViewController.swift in Sources */,
 				D70C959326EB7D6300455017 /* AppDelegate.swift in Sources */,
 				B8F1DE1A2B2AA53400E134D3 /* PlayerGesture.swift in Sources */,
@@ -273,6 +272,7 @@
 				B8500EF62B2850210039C1A7 /* SettingsProperties.swift in Sources */,
 				B8500EF42B2702A90039C1A7 /* SceneProperties.swift in Sources */,
 				D7583BB329DA7BE600EC316C /* SettingsViewController.swift in Sources */,
+				B8BC48572BBE4C9B00F7376D /* Documentation.docc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
+				DOCC_HOSTING_BASE_PATH = "Movie-3D-Player";
 				INFOPLIST_FILE = "$(SRCROOT)/SightVR/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
@@ -449,6 +450,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 973295K87L;
+				DOCC_HOSTING_BASE_PATH = "Movie-3D-Player";
 				INFOPLIST_FILE = "$(SRCROOT)/SightVR/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = SightVR;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";

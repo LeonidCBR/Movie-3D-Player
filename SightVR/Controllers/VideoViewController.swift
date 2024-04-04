@@ -8,12 +8,14 @@
 import UIKit
 import SceneKit
 
+/// Controller represents a video
 class VideoViewController: UIViewController {
 
     // MARK: - Properties
 
     let viewModel: VideoViewModel
 
+    /// Left view
     let sceneViewLeft: SCNView = {
         let sceneView = SCNView()
         sceneView.backgroundColor = .black
@@ -21,6 +23,7 @@ class VideoViewController: UIViewController {
         return sceneView
     }()
 
+    /// Right view
     let sceneViewRight: SCNView = {
         let sceneView = SCNView()
         sceneView.backgroundColor = .black
@@ -80,6 +83,7 @@ class VideoViewController: UIViewController {
         sceneViewRight.isPlaying = false
     }
 
+    /// Set up frames of the scene views
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // calculate with of the scene's views
@@ -128,6 +132,7 @@ class VideoViewController: UIViewController {
         }
     }
 
+    /// Create gesture recognizers and add them to the view
     func configureGestures() {
         var allAvailableGestures: [PlayerGesture: () -> Void] = [:]
         allAvailableGestures[.singleTap] = createSingleTapGesture

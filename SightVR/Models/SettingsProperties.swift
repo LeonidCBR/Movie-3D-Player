@@ -24,6 +24,7 @@ struct SettingsProperties {
         static let minThreshold: CGFloat = 0
     }
 
+    /// Horizontal orientation of the video player
     struct Orientation {
         static let key = "DeviceOrientation"
         static let defaultValue: DeviceOrientation = .leftSideDown

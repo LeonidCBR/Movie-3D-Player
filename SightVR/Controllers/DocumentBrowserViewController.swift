@@ -57,13 +57,12 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
         print("DEBUG: ERROR: Import is failed!")
     }
 
-    // MARK: Video Presentation
-
+    /// Video Presentation
     func presentVideo(at videoURL: URL) {
         // TODO: Consider to use a Factory
         let leftScene = SCNScene(named: SceneProperties.left)!
         let rightScene = SCNScene(named: SceneProperties.right)!
-        let document = Document(fileURL: videoURL)
+        let document = UIDocument(fileURL: videoURL)
         let motionManager = CMMotionManager()
         let settings = SettingsProvider()
         let delegate: RendererDelegate
@@ -87,6 +86,7 @@ class DocumentBrowserViewController: UIDocumentBrowserViewController, UIDocument
 
     // MARK: - Selectors
 
+    /// Present Settings
     @objc func settingsButtonTapped() {
         let settingsViewController = SettingsViewController()
         let closeAction = UIAction { _ in

@@ -11,6 +11,7 @@ protocol InputTextCellDelegate: AnyObject {
     func didGetValue(_ textField: UITextField, tableViewCell: UITableViewCell)
 }
 
+/// A cell with a label and text field
 class InputTextCell: UITableViewCell {
 
     // MARK: - Properties
@@ -55,11 +56,6 @@ class InputTextCell: UITableViewCell {
         contentView.addSubview(textField)
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
-        /*
-         top & bottom greater or equal 20.0 & centerY
-         label leading = 15.0
-         field trailing = 15.0 & 100.0x34.0
-         */
         NSLayoutConstraint.activate([
             textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             textField.widthAnchor.constraint(equalToConstant: 100.0),

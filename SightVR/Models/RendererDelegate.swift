@@ -9,6 +9,9 @@ import Foundation
 import SceneKit
 import CoreMotion
 
+/**
+ Renderer delegate set a rotation of the cameras accordingly motions of the device
+ */
 protocol RendererDelegate: AnyObject, SCNSceneRendererDelegate {
     var motionManager: CMMotionManager { get }
     init(motionManager: CMMotionManager)

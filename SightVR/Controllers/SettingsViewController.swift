@@ -7,14 +7,12 @@
 
 import UIKit
 
+/// Controller represents settings
 class SettingsViewController: UITableViewController {
-
     let numberOfSettingsSections = 3
     let commonSettingsSection = 0
-//    let actionSettingsSection = 1
     let playerSettingsSection = 1
     let actionSettingsSection = 2
-
     let inputTextCellIdentifier = "InputTextCellIdentifier"
     let actionCellIdentifier = "ActionCellIdentifier"
     let segmentedControlCellIdentifier = "SegmentedControlCellIdentifier"
@@ -173,6 +171,7 @@ class SettingsViewController: UITableViewController {
 // MARK: - InputTextCellDelegate
 
 extension SettingsViewController: InputTextCellDelegate {
+
     func didGetValue(_ textField: UITextField, tableViewCell: UITableViewCell) {
         guard let option = SettingsOption(rawValue: tableViewCell.tag) else {
             return
@@ -211,6 +210,7 @@ extension SettingsViewController: InputTextCellDelegate {
             }
         }
     }
+
 }
 
 // MARK: - GesturePickerViewControllerDelegate

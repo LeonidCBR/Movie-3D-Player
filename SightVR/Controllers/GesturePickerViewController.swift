@@ -11,8 +11,8 @@ protocol GesturePickerViewControllerDelegate: AnyObject {
     func didSelectGesture(_ playerGesture: PlayerGesture, for action: PlayerAction)
 }
 
+/// Controller represents gestures
 class GesturePickerViewController: UITableViewController {
-
     let gestureCellIdentifier = "GestureCellIdentifier"
     var selectedGesture: PlayerGesture?
     var playerAction: PlayerAction?

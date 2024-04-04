@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AVFoundation
 import CoreMotion
 import SpriteKit
 import SceneKit
@@ -16,17 +15,19 @@ protocol VideoViewModelDelegate: AnyObject {
     func videoDidClose()
 }
 
+/// A view model of the video view controller
 final class VideoViewModel {
     let rendererDelegate: RendererDelegate
     let settingsProvider: SettingsProvider
     let videoPlayer: AVPlayer
     let motionManager: CMMotionManager
-    let videoFile: Document
+    let videoFile: UIDocument
     let leftScene: SCNScene
     let rightScene: SCNScene
     var allAvailableActions: [PlayerAction: () -> Void] = [:]
     weak var delegate: VideoViewModelDelegate?
 
+    /// Left camera
     lazy var cameraNodeLeft: SCNNode = {
         guard let cameraNode = leftScene.rootNode.childNode(
             withName: SceneProperties.camera,
@@ -36,6 +37,7 @@ final class VideoViewModel {
         return cameraNode
     }()
 
+    /// Right camera
     lazy var cameraNodeRight: SCNNode = {
         guard let cameraNode = rightScene.rootNode.childNode(
             withName: SceneProperties.camera,
@@ -45,6 +47,7 @@ final class VideoViewModel {
         return cameraNode
     }()
 
+    /// Left dome represents a video scene
     lazy var domeNodeLeft: SCNNode = {
         guard let domeNode = leftScene.rootNode.childNode(
             withName: SceneProperties.sphere,
@@ -55,6 +58,7 @@ final class VideoViewModel {
         return domeNode
     }()
 
+    /// Right dome represents a video scene
     lazy var domeNodeRight: SCNNode = {
         guard let domeNode = rightScene.rootNode.childNode(
             withName: SceneProperties.sphere,
@@ -87,7 +91,7 @@ final class VideoViewModel {
         }
     }
 
-    init(with video: Document,
+    init(with video: UIDocument,
          settingsProvider: SettingsProvider,
          motionManager: CMMotionManager,
          rendererDelegate: RendererDelegate,
@@ -113,6 +117,7 @@ final class VideoViewModel {
         setupNowPlaying()
     }
 
+    /// Create and prepare the video scene
     func createVideoScene() {
         // Create video scene
         let videoSKScene = SKScene(size: CGSize(width: SceneProperties.defaultWidth,
@@ -259,6 +264,7 @@ final class VideoViewModel {
     }
 
     func configureActions() {
+        // In order to prevent retain cycle, consider to use closures instead of functions' names
         allAvailableActions[.closeVC] = closeVideo
         allAvailableActions[.play] = playPause
         allAvailableActions[.resetScenePosition] = initScenePosition
@@ -276,9 +282,6 @@ final class VideoViewModel {
 
     func handleGesture(_ gesture: PlayerGesture) {
         let actionSettings = settingsProvider.actionSettings
-//        for (key, value) in actionSettings where value !=  {
-//            gestures.insert(value)
-//        }
         if let action = actionSettings.first(where: { (_: PlayerAction, value: PlayerGesture) in
             value == gesture
         })?.key {

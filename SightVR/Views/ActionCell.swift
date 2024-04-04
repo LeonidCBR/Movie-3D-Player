@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// A cell represents an action and a gesture
 class ActionCell: UITableViewCell {
 
     // MARK: - Properties
